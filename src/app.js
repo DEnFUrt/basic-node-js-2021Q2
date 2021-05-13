@@ -23,4 +23,10 @@ app.use('/', (req, res, next) => {
 
 app.use('/users', userRouter);
 
+app.use((err, req, res, next) => {
+  process.stderr.write(err.stack);
+  res.status(500).send(`Something broke! Hz what: ${err.message}`);
+  next();
+});
+
 module.exports = app;
