@@ -4,6 +4,7 @@ const usersService = require('./user.service');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
+
   res.json(users.map(User.toResponse));
 });
 
@@ -12,11 +13,10 @@ router.route('/:id').get(async (req, res) => {
 
   try {
     const user = await usersService.get(id);
-    // res.json(User.toResponse(user));
 
-    res.status(201).json(User.toResponse(user));
+    res.json(User.toResponse(user));
   } catch (e) {
-    res.status(404).send(e.message);
+    res.status(404).send(`User not found: ${e.message}`);
   }
 });
 
@@ -28,9 +28,15 @@ router.route('/').post(async (req, res) => {
     password
   });
 
-  const user = await usersService.create(newUser);
-  res.status(201).json(User.toResponse(user));
-  // res.json(User.toResponse(user));
+  try {
+    const user = await usersService.create(newUser);
+
+    res.status(201).json(User.toResponse(user));
+  } catch (e) {
+    res.status(400).send(`Bad request: ${e.message}`);
+  }
+
+
 });
 
 router.route('/:id').put(async (req, res) => {
@@ -54,6 +60,7 @@ router.route('/:id').put(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
+  
   try {
     const result = await usersService.del(id);
 
