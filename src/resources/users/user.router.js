@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const StatusCodes = require('http-status-codes');
 const User = require('./user.model');
 const usersService = require('./user.service');
 
@@ -16,7 +17,7 @@ router.route('/:id').get(async (req, res) => {
 
     res.json(User.toResponse(user));
   } catch (e) {
-    res.status(404).send(`User not found: ${e.message}`);
+    res.status(StatusCodes.NOT_FOUND).send(`User not found: ${e.message}`);
   }
 });
 
@@ -31,9 +32,9 @@ router.route('/').post(async (req, res) => {
   try {
     const user = await usersService.create(newUser);
 
-    res.status(201).json(User.toResponse(user));
+    res.status(StatusCodes.CREATED).json(User.toResponse(user));
   } catch (e) {
-    res.status(400).send(`Bad request: ${e.message}`);
+    res.status(StatusCodes.BAD_REQUEST).send(`Bad request: ${e.message}`);
   }
 });
 
@@ -52,7 +53,7 @@ router.route('/:id').put(async (req, res) => {
 
     res.json(User.toResponse(user));
   } catch (e) {
-    res.status(400).send(`Bad request: ${e.message}`);
+    res.status(StatusCodes.BAD_REQUEST).send(`Bad request: ${e.message}`);
   }
 });
 
@@ -63,10 +64,10 @@ router.route('/:id').delete(async (req, res) => {
     const result = await usersService.del(id);
 
     if (result) {
-      res.status(204).send('The user has been deleted');
+      res.status(StatusCodes.NO_CONTENT).send('The user has been deleted');
     }
   } catch (e) {
-    res.status(404).send(`User not found: ${e.message}`);
+    res.status(StatusCodes.NOT_FOUND).send(`User not found: ${e.message}`);
   }
 });
 

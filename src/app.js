@@ -2,6 +2,7 @@ const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
 const YAML = require('yamljs');
+const StatusCodes = require('http-status-codes');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
@@ -31,7 +32,7 @@ boardRouter.use('/:boardId/tasks', taskRouter);
 
 app.use((err, req, res, next) => {
   process.stderr.write(err.stack);
-  res.status(500).send(`Something broke! Hz what: ${err.message}`);
+  res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`Something broke! Hz what: ${err.message}`);
   next();
 });
 

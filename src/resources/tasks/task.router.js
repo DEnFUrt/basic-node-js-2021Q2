@@ -1,4 +1,5 @@
 const router = require('express').Router({ mergeParams: true });
+const StatusCodes = require('http-status-codes');
 const Task = require('./task.model');
 const taskService = require('./task.service');
 
@@ -9,7 +10,7 @@ router.route('/').get(async (req, res) => {
     const tasks = await taskService.getAllByBoardId(boardId);
     res.json(tasks);
   } catch (e) {
-    res.status(404).send(e.message);
+    res.status(StatusCodes.NOT_FOUND).send(e.message);
   }
 });
 
@@ -21,7 +22,7 @@ router.route('/:id').get(async (req, res) => {
     const task = await taskService.getByBoardId({ boardId, taskId });
     res.json(task);
   } catch (e) {
-    res.status(404).send(e.message);
+    res.status(StatusCodes.NOT_FOUND).send(e.message);
   }
 });
 
@@ -41,9 +42,9 @@ router.route('/').post(async (req, res) => {
   try {
     const task = await taskService.create(newTask);
 
-    res.status(201).json(task);    
+    res.status(StatusCodes.CREATED).json(task);    
   } catch (e) {
-    res.status(400).send(`Bad request: ${e.message}`);
+    res.status(StatusCodes.BAD_REQUEST).send(`Bad request: ${e.message}`);
   }
 });
 
@@ -66,7 +67,7 @@ router.route('/:id').put(async (req, res) => {
     const task = await taskService.put({ boardId, taskId, newTask });
     res.json(task);
   } catch (e) {
-    res.status(400).send(`Bad request: ${e.message}`);
+    res.status(StatusCodes.BAD_REQUEST).send(`Bad request: ${e.message}`);
   }
 });
 
@@ -78,10 +79,10 @@ router.route('/:id').delete(async (req, res) => {
     const result = await taskService.del({ boardId, taskId });
 
     if (result) {
-      res.status(200).send('The task has been deleted');
+      res.status(StatusCodes.OK).send('The task has been deleted');
     }
   } catch (e) {
-    res.status(404).send(`Task not found: ${e.message}`);
+    res.status(StatusCodes.NOT_FOUND).send(`Task not found: ${e.message}`);
   }
 });
 
