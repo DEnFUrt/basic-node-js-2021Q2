@@ -35,8 +35,6 @@ router.route('/').post(async (req, res) => {
   } catch (e) {
     res.status(400).send(`Bad request: ${e.message}`);
   }
-
-
 });
 
 router.route('/:id').put(async (req, res) => {
@@ -65,7 +63,7 @@ router.route('/:id').delete(async (req, res) => {
     const result = await usersService.del(id);
 
     if (result) {
-      res.status([204]).send('The user has been deleted');
+      res.status(204).send('The user has been deleted');
     }
   } catch (e) {
     res.status(404).send(`User not found: ${e.message}`);
