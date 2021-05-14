@@ -1,7 +1,7 @@
 const DB = require('../../common/inTempBoardDB');
 
 const getAll = async () => {
-  const boards = DB.getAllBoards()
+  const boards = await DB.getAllBoards();
 
   return boards;
 };
