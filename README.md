@@ -8,7 +8,13 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
+```
+
+## Switch to the Task2 branch
+
+```
+git checkout task2
 ```
 
 ## Installing NPM modules
