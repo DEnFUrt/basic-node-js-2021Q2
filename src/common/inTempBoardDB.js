@@ -3,9 +3,9 @@ const DB = [];
 const getAllBoards = () => [...DB];
 
 const getBoard = id => {
-  const board = DB.filter(item => item.id === id);
+  const board = DB.find(item => item.id === id);
 
-  return board[0];
+  return board || null;
 };
 
 const createBoard = newBoard => {

@@ -1,12 +1,11 @@
 const router = require('express').Router();
 const StatusCodes = require('http-status-codes');
-const User = require('./user.model');
 const usersService = require('./user.service');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
 
-  res.json(users.map(User.toResponse));
+  res.json(users);
 });
 
 router.route('/:id').get(async (req, res) => {
@@ -15,45 +14,34 @@ router.route('/:id').get(async (req, res) => {
   try {
     const user = await usersService.get(id);
 
-    res.json(User.toResponse(user));
+    res.json(user);
   } catch (e) {
-    res.status(StatusCodes.NOT_FOUND).send(`User not found: ${e.message}`);
+    res.status(StatusCodes.NOT_FOUND).send({ message: `User not found: ${e.message}` });
   }
 });
 
 router.route('/').post(async (req, res) => {
   const { name, login, password } = req.body;
-  const newUser = new User({
-    name,
-    login,
-    password
-  });
-
+  
   try {
-    const user = await usersService.create(newUser);
+    const user = await usersService.create({ name, login, password });
 
-    res.status(StatusCodes.CREATED).json(User.toResponse(user));
+    res.status(StatusCodes.CREATED).json(user);
   } catch (e) {
-    res.status(StatusCodes.BAD_REQUEST).send(`Bad request: ${e.message}`);
+    res.status(StatusCodes.BAD_REQUEST).send({ message: `Bad request: ${e.message}` });
   }
 });
 
 router.route('/:id').put(async (req, res) => {
   const { id } = req.params;
   const { name, login, password } = req.body;
-  const newUser = new User({
-    id,
-    name,
-    login,
-    password
-  });
-
+  
   try {
-    const user = await usersService.put({ id, newUser });
+    const user = await usersService.put({ id, name, login, password });
 
-    res.json(User.toResponse(user));
+    res.json(user);
   } catch (e) {
-    res.status(StatusCodes.BAD_REQUEST).send(`Bad request: ${e.message}`);
+    res.status(StatusCodes.BAD_REQUEST).send({ message: `Bad request: ${e.message}` });
   }
 });
 
@@ -64,10 +52,10 @@ router.route('/:id').delete(async (req, res) => {
     const result = await usersService.del(id);
 
     if (result) {
-      res.status(StatusCodes.NO_CONTENT).send('The user has been deleted');
+      res.status(StatusCodes.NO_CONTENT).send({ message: 'The user has been deleted' });
     }
   } catch (e) {
-    res.status(StatusCodes.NOT_FOUND).send(`User not found: ${e.message}`);
+    res.status(StatusCodes.NOT_FOUND).send({ message: `User not found: ${e.message}` });
   }
 });
 

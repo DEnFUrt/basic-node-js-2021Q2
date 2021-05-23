@@ -10,10 +10,10 @@ const getTask = props => {
   const { boardId, taskId } = props;
 
   try {
-    const task = DB.filter(
+    const task = DB.find(
       item => item.id === taskId && item.boardId === boardId
     );
-    return task[0];
+    return task || null;
   } catch {
     return null;
   }
