@@ -9,7 +9,7 @@ const getAll = async () => {
 const get = async id => {
   const user = await DB.getUser(id);
 
-  if (!user) {
+  if (user === null) {
     throw new Error(`The user with id: ${id} was not found`);
   }
 
@@ -19,7 +19,7 @@ const get = async id => {
 const create = async newUser => {
   const result = await DB.createUser(newUser);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The user was not created`);
   };
 
@@ -30,7 +30,7 @@ const update = async props => {
   const { id } = props;
   const result = await DB.updateUser(props);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The user with id: ${id} was not updated`);
   };
 
@@ -40,7 +40,7 @@ const update = async props => {
 const del = async id => {
   const result = await DB.delUser(id);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The user with id: ${id} was not deleted`);
   };
 

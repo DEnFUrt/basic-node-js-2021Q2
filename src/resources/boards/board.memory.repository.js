@@ -9,7 +9,7 @@ const getAll = async () => {
 const get = async id => {
   const board = await DB.getBoard(id);
 
-  if (!board) {
+  if (board === null) {
     throw new Error(`The board with id: ${id} was not found`);
   }
 
@@ -19,7 +19,7 @@ const get = async id => {
 const create = async newBoard => {
   const result = DB.createBoard(newBoard);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The board was not created`);
   };
 
@@ -30,7 +30,7 @@ const update = async props => {
   const { id } = props;
   const result = await DB.updateBoard(props);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The board with id: ${id} was not updated`);
   };
 
@@ -40,7 +40,7 @@ const update = async props => {
 const del = async id => {
   const result = await DB.delBoard(id);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The board with id: ${id} was not deleted`);
   };
 

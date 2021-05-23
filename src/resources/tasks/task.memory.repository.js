@@ -11,7 +11,7 @@ const getByBoardId = async props => {
 
   const task = await DB.getTask(props);
 
-  if (!task) {
+  if (task === null) {
     throw new Error(`The task with id: ${taskId} was not found`);
   }
 
@@ -21,7 +21,7 @@ const getByBoardId = async props => {
 const create = async newTask => {
   const result = await DB.createTask(newTask);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The task was not created`);
   };
 
@@ -30,9 +30,18 @@ const create = async newTask => {
 
 const update = async props => {
   const { boardId, taskId } = props;
+
+  const searchTask = await DB.getTask({ boardId, taskId });
+
+  if (searchTask === null) {
+    throw new Error(`The task with id: ${taskId} was not found`);
+  };
+
+  
+  
   const result = await DB.updateTask(props);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The task with id: ${taskId} for board with id: ${boardId} was not updated`);
   };
 
@@ -43,7 +52,7 @@ const del = async props => {
   const { boardId, taskId } = props;
   const result = await DB.delTask(props);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The task with id: ${taskId} for board with id: ${boardId} was not deleted`);
   };
 
@@ -53,7 +62,7 @@ const del = async props => {
 const delByBoradId = async boardId => {
   const result = await DB.delTaskByBoardId(boardId);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`The tasks by board with id: ${boardId} was not deleted`);
   };
 
@@ -63,7 +72,7 @@ const delByBoradId = async boardId => {
 const resetUserId = async userId => {
   const result = await DB.resetUserIdInTasks(userId);
 
-  if (!result) {
+  if (result === null) {
     throw new Error(`Tasks where User with id: ${userId} is assignee should be was not updated`);
   };
 

@@ -3,9 +3,9 @@ const DB = [];
 const getAllUsers = () => [...DB];
 
 const getUser = id => {
-  const user = DB.filter(item => item.id === id);
+  const user = DB.find(item => item.id === id);
 
-  return user[0];
+  return user || null;
 };
 
 const createUser = newUser => {
