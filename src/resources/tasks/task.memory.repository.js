@@ -1,12 +1,12 @@
 const DB = require('../../common/inTempTaskDB');
 
-const getAllByBoardId = async boardId => {
+const getAllByBoardId = async (boardId) => {
   const tasks = await DB.getAllTasks(boardId);
 
   return tasks;
 };
 
-const getByBoardId = async props => {
+const getByBoardId = async (props) => {
   const { taskId } = props;
 
   const task = await DB.getTask(props);
@@ -18,63 +18,67 @@ const getByBoardId = async props => {
   return task;
 };
 
-const create = async newTask => {
+const create = async (newTask) => {
   const result = await DB.createTask(newTask);
 
   if (result === null) {
     throw new Error(`The task was not created`);
-  };
+  }
 
   return result;
 };
 
-const update = async props => {
+const update = async (props) => {
   const { boardId, taskId } = props;
 
   const searchTask = await DB.getTask({ boardId, taskId });
 
   if (searchTask === null) {
     throw new Error(`The task with id: ${taskId} was not found`);
-  };
+  }
 
-  
-  
   const result = await DB.updateTask(props);
 
   if (result === null) {
-    throw new Error(`The task with id: ${taskId} for board with id: ${boardId} was not updated`);
-  };
+    throw new Error(
+      `The task with id: ${taskId} for board with id: ${boardId} was not updated`,
+    );
+  }
 
   return result;
 };
 
-const del = async props => {
+const del = async (props) => {
   const { boardId, taskId } = props;
   const result = await DB.delTask(props);
 
   if (result === null) {
-    throw new Error(`The task with id: ${taskId} for board with id: ${boardId} was not deleted`);
-  };
+    throw new Error(
+      `The task with id: ${taskId} for board with id: ${boardId} was not deleted`,
+    );
+  }
 
   return result;
 };
 
-const delByBoradId = async boardId => {
+const delByBoradId = async (boardId) => {
   const result = await DB.delTaskByBoardId(boardId);
 
   if (result === null) {
     throw new Error(`The tasks by board with id: ${boardId} was not deleted`);
-  };
+  }
 
   return result;
 };
 
-const resetUserId = async userId => {
+const resetUserId = async (userId) => {
   const result = await DB.resetUserIdInTasks(userId);
 
   if (result === null) {
-    throw new Error(`Tasks where User with id: ${userId} is assignee should be was not updated`);
-  };
+    throw new Error(
+      `Tasks where User with id: ${userId} is assignee should be was not updated`,
+    );
+  }
 
   return result;
 };
@@ -86,5 +90,5 @@ module.exports = {
   update,
   del,
   delByBoradId,
-  resetUserId
+  resetUserId,
 };

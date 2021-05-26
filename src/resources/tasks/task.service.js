@@ -2,11 +2,18 @@ const tasksRepo = require('./task.memory.repository');
 const Task = require('./task.model');
 const boardsRepo = require('../boards/board.memory.repository');
 
-const getAllByBoardId = boardId => tasksRepo.getAllByBoardId(boardId);
+const getAllByBoardId = (boardId) => tasksRepo.getAllByBoardId(boardId);
 
-const getByBoardId = props => tasksRepo.getByBoardId(props);
+const getByBoardId = (props) => tasksRepo.getByBoardId(props);
 
-const create = async ({ title, order, description, userId, columnId, boardId }) => {
+const create = async ({
+  title,
+  order,
+  description,
+  userId,
+  columnId,
+  boardId,
+}) => {
   await boardsRepo.get(boardId);
 
   const newTask = new Task({
@@ -15,13 +22,21 @@ const create = async ({ title, order, description, userId, columnId, boardId }) 
     description,
     userId,
     columnId,
-    boardId
+    boardId,
   });
-  
+
   return tasksRepo.create(newTask);
 };
 
-const put = async ({ boardId, taskId, title, order, description, userId, columnId }) => {
+const put = async ({
+  boardId,
+  taskId,
+  title,
+  order,
+  description,
+  userId,
+  columnId,
+}) => {
   await getByBoardId({ boardId, taskId });
 
   const newTask = new Task({
@@ -31,7 +46,7 @@ const put = async ({ boardId, taskId, title, order, description, userId, columnI
     description,
     userId,
     columnId,
-    boardId
+    boardId,
   });
 
   return tasksRepo.update({ boardId, taskId, newTask });
@@ -48,5 +63,5 @@ module.exports = {
   getByBoardId,
   create,
   put,
-  del
+  del,
 };

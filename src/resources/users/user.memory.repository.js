@@ -1,12 +1,12 @@
 const DB = require('../../common/inTempUserDB');
 
 const getAll = async () => {
-  const users = await DB.getAllUsers()
+  const users = await DB.getAllUsers();
 
   return users;
 };
 
-const get = async id => {
+const get = async (id) => {
   const user = await DB.getUser(id);
 
   if (user === null) {
@@ -16,33 +16,33 @@ const get = async id => {
   return user;
 };
 
-const create = async newUser => {
+const create = async (newUser) => {
   const result = await DB.createUser(newUser);
 
   if (result === null) {
     throw new Error(`The user was not created`);
-  };
+  }
 
   return result;
 };
 
-const update = async props => {
+const update = async (props) => {
   const { id } = props;
   const result = await DB.updateUser(props);
 
   if (result === null) {
     throw new Error(`The user with id: ${id} was not updated`);
-  };
+  }
 
   return result;
 };
 
-const del = async id => {
+const del = async (id) => {
   const result = await DB.delUser(id);
 
   if (result === null) {
     throw new Error(`The user with id: ${id} was not deleted`);
-  };
+  }
 
   return result;
 };

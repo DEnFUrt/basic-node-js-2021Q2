@@ -8,7 +8,7 @@ class Task {
     description = 'Task description',
     userId = null,
     boardId = null,
-    columnId = null
+    columnId = null,
   } = {}) {
     this.id = id;
     this.title = title;

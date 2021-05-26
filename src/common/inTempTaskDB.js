@@ -1,17 +1,17 @@
 let DB = [];
 
-const getAllTasks = boardId => {
-  const tasks = DB.filter(item => item.boardId === boardId);
+const getAllTasks = (boardId) => {
+  const tasks = DB.filter((item) => item.boardId === boardId);
 
   return tasks;
 };
 
-const getTask = props => {
+const getTask = (props) => {
   const { boardId, taskId } = props;
 
   try {
     const task = DB.find(
-      item => item.id === taskId && item.boardId === boardId
+      (item) => item.id === taskId && item.boardId === boardId,
     );
     return task || null;
   } catch {
@@ -19,7 +19,7 @@ const getTask = props => {
   }
 };
 
-const createTask = newTask => {
+const createTask = (newTask) => {
   try {
     DB.push(newTask);
 
@@ -29,11 +29,11 @@ const createTask = newTask => {
   }
 };
 
-const updateTask = props => {
+const updateTask = (props) => {
   const { boardId, taskId, newTask } = props;
-  
+
   const searchIndexTask = DB.findIndex(
-    item => item.id === taskId && item.boardId === boardId
+    (item) => item.id === taskId && item.boardId === boardId,
   );
 
   try {
@@ -45,11 +45,11 @@ const updateTask = props => {
   }
 };
 
-const delTask = props => {
+const delTask = (props) => {
   const { boardId, taskId } = props;
-  
+
   const searchIndexTask = DB.findIndex(
-    item => item.id === taskId && item.boardId === boardId
+    (item) => item.id === taskId && item.boardId === boardId,
   );
 
   try {
@@ -61,9 +61,9 @@ const delTask = props => {
   }
 };
 
-const delTaskByBoardId = boardId => {
+const delTaskByBoardId = (boardId) => {
   try {
-    DB = DB.filter(item => item.boardId !== boardId);
+    DB = DB.filter((item) => item.boardId !== boardId);
 
     return true;
   } catch {
@@ -71,10 +71,10 @@ const delTaskByBoardId = boardId => {
   }
 };
 
-const resetUserIdInTasks = userId => {
+const resetUserIdInTasks = (userId) => {
   try {
-    DB = DB.map(item => 
-      item.userId === userId ? {...item, userId: null} : {...item}
+    DB = DB.map((item) =>
+      item.userId === userId ? { ...item, userId: null } : { ...item },
     );
 
     return true;
@@ -90,5 +90,5 @@ module.exports = {
   updateTask,
   delTaskByBoardId,
   delTask,
-  resetUserIdInTasks
+  resetUserIdInTasks,
 };

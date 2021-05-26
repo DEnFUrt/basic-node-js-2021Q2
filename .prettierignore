@@ -1,0 +1,11 @@
+build/
+doc/
+jsdoc/
+test/
+node_modules/
+
+*.css
+*.html
+
+webpack.config.js
+serviceWorker.js

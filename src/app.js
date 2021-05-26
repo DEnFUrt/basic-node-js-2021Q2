@@ -32,7 +32,9 @@ boardRouter.use('/:boardId/tasks', taskRouter);
 
 app.use((err, req, res, next) => {
   process.stderr.write(err.stack);
-  res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`Something broke! Hz what: ${err.message}`);
+  res
+    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+    .send(`Something broke! Hz what: ${err.message}`);
   next();
 });
 

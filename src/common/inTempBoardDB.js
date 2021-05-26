@@ -2,13 +2,13 @@ const DB = [];
 
 const getAllBoards = () => [...DB];
 
-const getBoard = id => {
-  const board = DB.find(item => item.id === id);
+const getBoard = (id) => {
+  const board = DB.find((item) => item.id === id);
 
   return board || null;
 };
 
-const createBoard = newBoard => {
+const createBoard = (newBoard) => {
   try {
     DB.push(newBoard);
 
@@ -18,10 +18,10 @@ const createBoard = newBoard => {
   }
 };
 
-const updateBoard = props => {
+const updateBoard = (props) => {
   const { id, newBoard } = props;
-  
-  const searchIndexBoard = DB.findIndex(item => item.id === id);
+
+  const searchIndexBoard = DB.findIndex((item) => item.id === id);
 
   try {
     DB.splice(searchIndexBoard, 1, newBoard);
@@ -32,8 +32,8 @@ const updateBoard = props => {
   }
 };
 
-const delBoard = id => {
-  const searchIndexBoard = DB.findIndex(item => item.id === id);
+const delBoard = (id) => {
+  const searchIndexBoard = DB.findIndex((item) => item.id === id);
 
   try {
     DB.splice(searchIndexBoard, 1);
@@ -49,5 +49,5 @@ module.exports = {
   getBoard,
   createBoard,
   updateBoard,
-  delBoard
+  delBoard,
 };

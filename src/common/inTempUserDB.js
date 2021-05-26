@@ -2,13 +2,13 @@ const DB = [];
 
 const getAllUsers = () => [...DB];
 
-const getUser = id => {
-  const user = DB.find(item => item.id === id);
+const getUser = (id) => {
+  const user = DB.find((item) => item.id === id);
 
   return user || null;
 };
 
-const createUser = newUser => {
+const createUser = (newUser) => {
   try {
     DB.push(newUser);
 
@@ -18,10 +18,10 @@ const createUser = newUser => {
   }
 };
 
-const updateUser = props => {
+const updateUser = (props) => {
   const { id, newUser } = props;
 
-  const searchIndexUser = DB.findIndex(item => item.id === id);
+  const searchIndexUser = DB.findIndex((item) => item.id === id);
 
   try {
     DB.splice(searchIndexUser, 1, newUser);
@@ -32,8 +32,8 @@ const updateUser = props => {
   }
 };
 
-const delUser = id => {
-  const searchIndexUser = DB.findIndex(item => item.id === id);
+const delUser = (id) => {
+  const searchIndexUser = DB.findIndex((item) => item.id === id);
 
   try {
     DB.splice(searchIndexUser, 1);
@@ -49,5 +49,5 @@ module.exports = {
   getUser,
   createUser,
   updateUser,
-  delUser
+  delUser,
 };

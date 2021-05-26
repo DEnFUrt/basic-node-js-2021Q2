@@ -8,7 +8,7 @@ const getAll = async () => {
   return users.map(User.toResponse);
 };
 
-const get = async id => {
+const get = async (id) => {
   const user = await usersRepo.get(id);
 
   return User.toResponse(user);
@@ -18,7 +18,7 @@ const create = async ({ name, login, password }) => {
   const newUser = new User({
     name,
     login,
-    password
+    password,
   });
 
   const user = await usersRepo.create(newUser);
@@ -33,18 +33,18 @@ const put = async ({ id, name, login, password }) => {
     id,
     name,
     login,
-    password
+    password,
   });
 
-  const user = await usersRepo.update({id, newUser});
+  const user = await usersRepo.update({ id, newUser });
 
   return User.toResponse(user);
 };
 
-const del = async id => {
+const del = async (id) => {
   await get(id);
   await tasksRepo.resetUserId(id);
-  
+
   return usersRepo.del(id);
 };
 

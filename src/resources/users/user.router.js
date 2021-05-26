@@ -16,46 +16,56 @@ router.route('/:id').get(async (req, res) => {
 
     res.json(user);
   } catch (e) {
-    res.status(StatusCodes.NOT_FOUND).send({ message: `User not found: ${e.message}` });
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .send({ message: `User not found: ${e.message}` });
   }
 });
 
 router.route('/').post(async (req, res) => {
   const { name, login, password } = req.body;
-  
+
   try {
     const user = await usersService.create({ name, login, password });
 
     res.status(StatusCodes.CREATED).json(user);
   } catch (e) {
-    res.status(StatusCodes.BAD_REQUEST).send({ message: `Bad request: ${e.message}` });
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .send({ message: `Bad request: ${e.message}` });
   }
 });
 
 router.route('/:id').put(async (req, res) => {
   const { id } = req.params;
   const { name, login, password } = req.body;
-  
+
   try {
     const user = await usersService.put({ id, name, login, password });
 
     res.json(user);
   } catch (e) {
-    res.status(StatusCodes.BAD_REQUEST).send({ message: `Bad request: ${e.message}` });
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .send({ message: `Bad request: ${e.message}` });
   }
 });
 
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
-  
+
   try {
     const result = await usersService.del(id);
 
     if (result) {
-      res.status(StatusCodes.NO_CONTENT).send({ message: 'The user has been deleted' });
+      res
+        .status(StatusCodes.NO_CONTENT)
+        .send({ message: 'The user has been deleted' });
     }
   } catch (e) {
-    res.status(StatusCodes.NOT_FOUND).send({ message: `User not found: ${e.message}` });
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .send({ message: `User not found: ${e.message}` });
   }
 });
 

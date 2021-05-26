@@ -8,9 +8,9 @@ class Board {
       {
         id: uuid(),
         title: 'Title Column',
-        order: 0
-      }
-    ]
+        order: 0,
+      },
+    ],
   } = {}) {
     this.id = id;
     this.title = title;
