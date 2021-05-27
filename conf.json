@@ -2,7 +2,7 @@
   "plugins": [],
   "recurseDepth": 10,
   "source": {
-    "include": ["src", "./README.md"],
+    "include": ["src"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
@@ -16,8 +16,34 @@
     "monospaceLinks": false
   },
   "opts": {
-    "encoding": "utf8",              
-    "destination": "./jsdoc/",          
-    "recurse": true                  
+    "encoding": "utf8",    
+    "readme": "./README.md",          
+    "destination": "./jsdoc/", 
+    "verbose": true,         
+    "recurse": true,
+    "template": "node_modules/clean-jsdoc-theme",
+    "theme_opts": {
+      "theme": "dark",
+      "title": "Basic node js 2021Q2",
+      "menu": [
+        {
+          "title": "Github",
+          "link": "https://github.com/DEnFUrt/basic-node-js-2021Q2",
+          "target": "_blank",
+          "class": "some-class",
+          "id": "some-id"
+        }
+      ],
+      "meta": [
+          {
+            "name": "author",
+            "content": "DEnFUrt"
+          },
+          {
+            "name": "description",
+            "content": "Basic node js 2021Q2"
+          }
+        ]
+    }                
   }
 }

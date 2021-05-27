@@ -1,3 +1,10 @@
+/**
+ * Module for all Users related functions.
+ *
+ * @module /src/common/inTempUserdDB
+ * @see /src/resources/boards/user.memory.repository
+ */
+
 const DB = [];
 
 const getAllUsers = () => [...DB];
