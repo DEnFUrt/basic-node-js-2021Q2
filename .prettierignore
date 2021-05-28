@@ -3,6 +3,8 @@ doc/
 jsdoc/
 test/
 node_modules/
+.github
+.vscode
 
 *.css
 *.html

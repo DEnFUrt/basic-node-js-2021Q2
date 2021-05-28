@@ -28,7 +28,7 @@ const getAllBoards = () => [...DB];
  *   // -> null
  *
  * @param {string} id - Id Board
- * @returns {object | null} - Returns the Board entity object with the passed id or null
+ * @returns {(object | null)} - Returns the Board entity object with the passed id or null
  */
 const getBoard = (id) => {
   const board = DB.find((item) => item.id === id);
@@ -48,11 +48,11 @@ const getBoard = (id) => {
  * @param {object} newBoard - New Board
  * @param {string} newBoard.id - The id of the board
  * @param {string} newBoard.title - The title of the board
- * @param {Object[]} newBoard.columns - The columns of the board
+ * @param {object[]} newBoard.columns - The columns of the board
  * @param {string} newBoard.columns.id - The id of the column
  * @param {string} newBoard.columns.title - The title of the columns
  * @param {number} newBoard.columns.order - The order of the columns
- * @returns {object | null} - Returns the created Board object, or null on error
+ * @returns {(object | null)} - Returns the created Board object, or null on error
  */
 const createBoard = (newBoard) => {
   try {
@@ -61,7 +61,7 @@ const createBoard = (newBoard) => {
     return newBoard;
   } catch {
     return null;
-  }
+  };
 };
 
 /**
@@ -82,7 +82,7 @@ const createBoard = (newBoard) => {
  * @param {string} props.newBoard.columns.id - The id of the column
  * @param {string} props.newBoard.columns.title - The title of the column
  * @param {number} props.newBoard.columns.order - The order of the column
- * @returns {object | null} - Returns the updated Board object, or null on error
+ * @returns {(object | null)} - Returns the updated Board object, or null on error
  */
 const updateBoard = (props) => {
   const { id, newBoard } = props;
@@ -95,7 +95,7 @@ const updateBoard = (props) => {
     return newBoard;
   } catch {
     return null;
-  }
+  };
 };
 
 /**
@@ -104,11 +104,11 @@ const updateBoard = (props) => {
  * @example
  *   delBoard(id);
  *   // -> true
- *   or;
+ *   //or;
  *   // -> null
  *
  * @param {string} id - Id record board for deletion
- * @returns {true | null} - Returns true on success or null on error
+ * @returns {(true | null)} - Returns true on success or null on error
  */
 const delBoard = (id) => {
   const searchIndexBoard = DB.findIndex((item) => item.id === id);
@@ -119,7 +119,7 @@ const delBoard = (id) => {
     return true;
   } catch {
     return null;
-  }
+  };
 };
 
 module.exports = {

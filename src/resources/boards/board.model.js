@@ -1,6 +1,15 @@
 const uuid = require('uuid').v4;
 
+/** Creates a new Board */
 class Board {
+  /**
+   * @param {string} id - The id the board
+   * @param {string} title - The title of the board
+   * @param {object[]} columns - The columns of the board
+   * @param {string} columns.id - The id of the column
+   * @param {string} columns.title - The title of the columns
+   * @param {number} columns.order - The order of the columns
+   */
   constructor({
     id = uuid(),
     title = 'Title Board',
