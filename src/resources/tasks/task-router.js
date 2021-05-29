@@ -1,6 +1,6 @@
 const router = require('express').Router({ mergeParams: true });
 const StatusCodes = require('http-status-codes');
-const taskService = require('./task.service');
+const taskService = require('./task-service');
 
 router.route('/').get(async (req, res) => {
   const { boardId } = req.params;

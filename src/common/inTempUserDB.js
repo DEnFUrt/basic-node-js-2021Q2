@@ -1,8 +1,8 @@
 /**
  * Module for all Users related functions.
  *
- * @module /src/common/inTempUserdDB
- * @see /src/resources/boards/user.memory.repository
+ * @module UserDb
+ * @see {@link ./src/resources/user-model UserModel}
  */
 
 const DB = [];
@@ -14,7 +14,7 @@ const DB = [];
  *   getAllUsers();
  *   // -> [{ id: string, name: string, login: string, {...} }]
  *
- * @returns {object[]} - Returns an array of User entity objects
+ * @returns {UserModel[]} Returns an array of User entity objects
  */
 const getAllUsers = () => [...DB];
 
@@ -28,7 +28,7 @@ const getAllUsers = () => [...DB];
  *   // -> null
  *
  * @param {string} id - Id User
- * @returns {object | null} - Returns the User entity object with the passed id or null
+ * @returns {(UserModel | null)} - Returns the User entity object with the passed id or null
  */
 const getUser = (id) => {
   const user = DB.find((item) => item.id === id);
@@ -50,7 +50,7 @@ const getUser = (id) => {
  * @param {string} newUser.name - The name of the user
  * @param {string} newUser.login - The login of the user
  * @param {string} newUser.password - The password of the userw User
- * @returns {object | null} - Returns the created Board object, or null on error
+ * @returns {(UserModel | null)} - Returns the created Board object, or null on error
  */
 const createUser = (newUser) => {
   try {
@@ -59,7 +59,7 @@ const createUser = (newUser) => {
     return newUser;
   } catch {
     return null;
-  }
+  };
 };
 
 /**
@@ -78,7 +78,7 @@ const createUser = (newUser) => {
  * @param {string} props.newUser.name - The name of the user
  * @param {string} props.newUser.login - The login of the user
  * @param {string} props.newUser.password - The password of the userw User
- * @returns {object | null} - Returns the created Board object, or null on error
+ * @returns {(UserModel | null)} - Returns the created Board object, or null on error
  */
 const updateUser = (props) => {
   const { id, newUser } = props;
@@ -91,7 +91,7 @@ const updateUser = (props) => {
     return newUser;
   } catch {
     return null;
-  }
+  };
 };
 
 /**
@@ -115,7 +115,7 @@ const delUser = (id) => {
     return true;
   } catch {
     return null;
-  }
+  };
 };
 
 module.exports = {

@@ -1,72 +1,72 @@
 const router = require('express').Router();
 const StatusCodes = require('http-status-codes');
-const boardService = require('./board.service');
+const usersService = require('./user-service');
 
 router.route('/').get(async (req, res) => {
-  const borads = await boardService.getAll();
+  const users = await usersService.getAll();
 
-  res.json(borads);
+  res.json(users);
 });
 
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
 
   try {
-    const borad = await boardService.get(id);
+    const user = await usersService.get(id);
 
-    res.json(borad);
+    res.json(user);
   } catch (e) {
     res
       .status(StatusCodes.NOT_FOUND)
-      .send({ message: `Board not found: ${e.message}` });
-  }
+      .send({ message: `User not found: ${e.message}` });
+  };
 });
 
 router.route('/').post(async (req, res) => {
-  const { title, columns } = req.body;
+  const { name, login, password } = req.body;
 
   try {
-    const board = await boardService.create({ title, columns });
+    const user = await usersService.create({ name, login, password });
 
-    res.status(StatusCodes.CREATED).json(board);
+    res.status(StatusCodes.CREATED).json(user);
   } catch (e) {
     res
       .status(StatusCodes.BAD_REQUEST)
       .send({ message: `Bad request: ${e.message}` });
-  }
+  };
 });
 
 router.route('/:id').put(async (req, res) => {
   const { id } = req.params;
-  const { title, columns } = req.body;
+  const { name, login, password } = req.body;
 
   try {
-    const board = await boardService.put({ id, title, columns });
+    const user = await usersService.put({ id, name, login, password });
 
-    res.json(board);
+    res.json(user);
   } catch (e) {
     res
       .status(StatusCodes.BAD_REQUEST)
       .send({ message: `Bad request: ${e.message}` });
-  }
+  };
 });
 
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await boardService.del(id);
+    const result = await usersService.del(id);
 
     if (result) {
       res
         .status(StatusCodes.NO_CONTENT)
-        .send({ message: 'The board has been deleted' });
-    }
+        .send({ message: 'The user has been deleted' });
+    };
   } catch (e) {
     res
       .status(StatusCodes.NOT_FOUND)
-      .send({ message: `Board not found: ${e.message}` });
-  }
+      .send({ message: `User not found: ${e.message}` });
+  };
 });
 
 module.exports = router;

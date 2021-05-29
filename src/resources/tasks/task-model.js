@@ -1,3 +1,14 @@
+/**
+   * @typedef {object} TaskModel
+   * @property {string} id - The id of the task
+   * @property {string} title - The title of the task
+   * @property {number} order - The order of the task
+   * @property {string} description - The description of the task
+   * @property {string} userId - User id of the author of the task
+   * @property {string} boardId - The board ID of which the task belongs
+   * @property {string} columnId - The column ID of which the task belongs
+   */
+
 const uuid = require('uuid').v4;
 
 /** Creates a new Task */

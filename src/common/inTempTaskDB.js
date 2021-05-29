@@ -1,8 +1,8 @@
 /**
- * Module for all Board related functions.
+ * Module for all Task related functions.
  *
- * @module /src/common/inTempTaskdDB
- * @see /src/resources/boards/task.memory.repository
+ * @module TaskdDb
+ * @see {@link ./src/resources/task-model TaskModel}
  */
 
 let DB = [];
@@ -15,7 +15,7 @@ let DB = [];
  *   // -> [{ id: string, title: string, order: number, description: string, userId: string }, {...}]
  *
  * @param {string} id - Id Board
- * @returns {object[]} - Returns an array Tasks entity object with the passed id Board
+ * @returns {TaskModel[]} Returns an array Tasks entity object with the passed id Board
  */
 const getAllTasks = (boardId) => {
   const tasks = DB.filter((item) => item.boardId === boardId);
@@ -35,7 +35,7 @@ const getAllTasks = (boardId) => {
  * @param {object} props - Id Board and id task
  * @param {string} props.boardId - The board ID of which the task belongs
  * @param {string} props.taskId - The id of the task
- * @returns {(object | null)} - Returns the Task entity object with the passed id and id of the Board or null
+ * @returns {(TaskModel | null)} Returns the Task entity object with the passed id and id of the Board or null
  */
 const getTask = (props) => {
   const { boardId, taskId } = props;
@@ -67,7 +67,7 @@ const getTask = (props) => {
  * @param {string} newTask.userId - User id of the author of the task
  * @param {string} newTask.boardId - The board ID of which the task belongs
  * @param {string} newTask.columnId - The column ID of which the task belongs
- * @returns {(object | null)} - Returns the Task entity object with the passed id and id of the Board or null
+ * @returns {(TaskModel | null)} Returns the Task entity object with the passed id and id of the Board or null
  */
 const createTask = (newTask) => {
   try {
@@ -99,7 +99,7 @@ const createTask = (newTask) => {
  * @param {string} props.newTask.userId - User id of the author of the task
  * @param {string} props.newTask.boardId - The board ID of which the task belongs
  * @param {string} props.newTask.columnId - The column ID of which the task belongs
- * @returns {(object | null)} - Returns the updated Task object, or null on error
+ * @returns {(TaskModel | null)} Returns the updated Task object, or null on error
  */
 const updateTask = (props) => {
   const { boardId, taskId, newTask } = props;
@@ -129,7 +129,7 @@ const updateTask = (props) => {
  * @param {object} props - Id Board and id task
  * @param {string} props.boardId - The board ID of which the task belongs
  * @param {string} props.taskId - The id of the task
- * @returns {(true | null)} - Returns true on success or null on error
+ * @returns {(true | null)} Returns true on success or null on error
  */
 const delTask = (props) => {
   const { boardId, taskId } = props;
@@ -157,7 +157,7 @@ const delTask = (props) => {
  *   // -> null
  * 
  * @param {string} boardId - The ID of the board to be removed
- * @returns {(true | null)} - Returns true on success or null on error
+ * @returns {(true | null)} Returns true on success or null on error
  */
 const delTaskByBoardId = (boardId) => {
   try {
@@ -179,7 +179,7 @@ const delTaskByBoardId = (boardId) => {
  *   // -> null
  * 
  * @param {string} userId - The ID of the user to be removed
- * @returns {(true | null)} - Returns true on success or null on error
+ * @returns {(true | null)} Returns true on success or null on error
  */
 const resetUserIdInTasks = (userId) => {
   try {

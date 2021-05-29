@@ -1,3 +1,11 @@
+/**
+   * @typedef {object} UserModel
+   * @property {string} id - The id of the user
+   * @property {string} name - The name of the user
+   * @property {string} login - The login of the user
+   * @property {string} password - The password of the user
+   */
+
 const uuid = require('uuid').v4;
 
 /** Creates a new User */
