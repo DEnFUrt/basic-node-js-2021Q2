@@ -1,22 +1,21 @@
-const express = require('express');
-const swaggerUI = require('swagger-ui-express');
-const path = require('path');
-const YAML = require('yamljs');
-const StatusCodes = require('http-status-codes');
-const userRouter = require('./resources/users/user-router');
-const boardRouter = require('./resources/boards/board-router');
-const taskRouter = require('./resources/tasks/task-router');
+import express, { Application, Response, Request, NextFunction } from 'express';
+import YAML from 'yamljs';
+import path from 'path';
+import swaggerUI from 'swagger-ui-express';
+import StatusCodes from 'http-status-codes';
+import userRouter from './resources/users/user-router';
+import boardRouter from './resources/boards/board-router';
+import taskRouter from './resources/tasks/task-router';
 
-const app = express();
-const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
+const app: Application = express();
 
 app.use(express.json());
 
-if (process.env.NODE_ENV !== 'production') {
-  app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+if (process.env['NODE_ENV'] !== 'production') {
+  app.use('/doc', swaggerUI.serve, swaggerUI.setup(YAML.load(path.join(__dirname, '../doc/api.yaml'))));
 }
 
-app.use('/', (req, res, next) => {
+app.use('/', (req: Request, res: Response, next: NextFunction) => {
   if (req.originalUrl === '/') {
     res.send('Service is running!');
     return;
@@ -30,12 +29,12 @@ app.use('/boards', boardRouter);
 
 boardRouter.use('/:boardId/tasks', taskRouter);
 
-app.use((err, req, res, next) => {
-  process.stderr.write(err.stack);
+app.use((err: Error, _req: Request, res: Response, next: NextFunction) => {
+  process.stderr.write(err.message);
   res
     .status(StatusCodes.INTERNAL_SERVER_ERROR)
     .send(`Something broke! Hz what: ${err.message}`);
   next();
 });
 
-module.exports = app;
+export default app;
