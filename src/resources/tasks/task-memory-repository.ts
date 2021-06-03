@@ -9,12 +9,12 @@ const getAllByBoardId = async (boardId: string): Promise<ITask[]> => {
 };
 
 const getByBoardId = async (props: { taskId: string; boardId: string; }): Promise<ITask> => {
-  const { taskId } = props;
+  const { taskId, boardId } = props;
 
   const result = DB.getTask(props);
 
   if (result === null) {
-    throw new Error(`The task with id: ${taskId} was not found`);
+    throw new Error(`The task with id: ${taskId} for board with id: ${boardId} was not found`);
   };
 
   return result;
@@ -33,11 +33,7 @@ const create = async (newTask: ITask): Promise<ITask> => {
 const update = async (props: { boardId: string; taskId: string; newTask: ITask; }): Promise<ITask> => {
   const { boardId, taskId } = props;
 
-  const searchTask = await getByBoardId({ boardId, taskId });
-
-  if (searchTask === null) {
-    throw new Error(`The task with id: ${taskId} was not found`);
-  };
+  await getByBoardId({ boardId, taskId });
 
   const result = DB.updateTask(props);
 
@@ -52,6 +48,7 @@ const update = async (props: { boardId: string; taskId: string; newTask: ITask; 
 
 const del = async (props: { boardId: string; taskId: string; }): Promise<boolean> => {
   const { boardId, taskId } = props;
+  
   const result = DB.delTask(props);
 
   if (result === null) {

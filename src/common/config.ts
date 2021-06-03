@@ -6,6 +6,7 @@ dotenv.config({
 });
 
 if (!process.env['PORT']) {
+  process.stderr.write('Server port not specified!');
   process.exit(1);
 } 
 
