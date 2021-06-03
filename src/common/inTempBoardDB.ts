@@ -17,7 +17,7 @@ const createBoard = (newBoard: IBoard): IBoard | null => {
     return newBoard;
   } catch {
     return null;
-  };
+  }
 };
 
 const updateBoard = (props: { id: string; newBoard: IBoard }): IBoard | null => {
@@ -31,7 +31,7 @@ const updateBoard = (props: { id: string; newBoard: IBoard }): IBoard | null => 
     return newBoard;
   } catch {
     return null;
-  };
+  }
 };
 
 const delBoard = (id: string): boolean | null => {
@@ -43,13 +43,7 @@ const delBoard = (id: string): boolean | null => {
     return true;
   } catch {
     return null;
-  };
+  }
 };
 
-export {
-  getAllBoards,
-  getBoard,
-  createBoard,
-  updateBoard,
-  delBoard,
-};
+export { getAllBoards, getBoard, createBoard, updateBoard, delBoard };

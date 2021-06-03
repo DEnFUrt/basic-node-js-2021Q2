@@ -5,8 +5,8 @@ class Board implements IBoard {
   id: string;
 
   title: string;
-  
-  columns: IColumn[];  
+
+  columns: IColumn[];
 
   constructor({
     id = uuid(),
@@ -23,6 +23,6 @@ class Board implements IBoard {
     this.title = title;
     this.columns = columns;
   }
-};
+}
 
 export default Board;

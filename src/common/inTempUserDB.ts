@@ -17,10 +17,10 @@ const createUser = (newUser: IUser): IUser | null => {
     return newUser;
   } catch {
     return null;
-  };
+  }
 };
 
-const updateUser = (props: { id: string; newUser: IUser; }): IUser | null => {
+const updateUser = (props: { id: string; newUser: IUser }): IUser | null => {
   const { id, newUser } = props;
 
   const searchIndexUser = DB.findIndex((item) => item.id === id);
@@ -31,7 +31,7 @@ const updateUser = (props: { id: string; newUser: IUser; }): IUser | null => {
     return newUser;
   } catch {
     return null;
-  };
+  }
 };
 
 const delUser = (id: string): boolean | null => {
@@ -43,13 +43,7 @@ const delUser = (id: string): boolean | null => {
     return true;
   } catch {
     return null;
-  };
+  }
 };
 
-export {
-  getAllUsers,
-  getUser,
-  createUser,
-  updateUser,
-  delUser,
-};
+export { getAllUsers, getUser, createUser, updateUser, delUser };

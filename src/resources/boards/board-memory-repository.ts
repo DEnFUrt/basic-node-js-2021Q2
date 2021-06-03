@@ -12,7 +12,7 @@ const get = async (id: string): Promise<IBoard> => {
 
   if (result === null) {
     throw new Error(`The board with id: ${id} was not found`);
-  };
+  }
 
   return result;
 };
@@ -22,18 +22,18 @@ const create = async (newBoard: IBoard): Promise<IBoard> => {
 
   if (result === null) {
     throw new Error(`The board was not created`);
-  };
+  }
 
   return result;
 };
 
-const update = async (props: { id: string; newBoard: IBoard; }): Promise<IBoard> => {
+const update = async (props: { id: string; newBoard: IBoard }): Promise<IBoard> => {
   const { id } = props;
   const result = DB.updateBoard(props);
 
   if (result === null) {
     throw new Error(`The board with id: ${id} was not updated`);
-  };
+  }
 
   return result;
 };
@@ -43,15 +43,9 @@ const del = async (id: string): Promise<boolean> => {
 
   if (result === null) {
     throw new Error(`The board with id: ${id} was not deleted`);
-  };
+  }
 
   return result;
 };
 
-export {
-  getAll,
-  get,
-  create,
-  update,
-  del,
-};
+export { getAll, get, create, update, del };

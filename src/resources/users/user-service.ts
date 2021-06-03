@@ -15,7 +15,11 @@ const get = async (id: string): Promise<IUserToResponse> => {
   return User.toResponse(user);
 };
 
-const create = async (props: { name: string; login: string; password: string; }): Promise<IUserToResponse> => {
+const create = async (props: {
+  name: string;
+  login: string;
+  password: string;
+}): Promise<IUserToResponse> => {
   const { name, login, password } = props;
 
   const newUser = new User({
@@ -29,7 +33,12 @@ const create = async (props: { name: string; login: string; password: string; })
   return User.toResponse(user);
 };
 
-const put = async (props: { id: string; name: string; login: string; password: string; }): Promise<IUserToResponse> => {
+const put = async (props: {
+  id: string;
+  name: string;
+  login: string;
+  password: string;
+}): Promise<IUserToResponse> => {
   const { id, name, login, password } = props;
 
   await get(id);

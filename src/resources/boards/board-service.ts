@@ -7,7 +7,7 @@ const getAll = (): Promise<IBoard[]> => boardsRepo.getAll();
 
 const get = async (id: string): Promise<IBoard> => boardsRepo.get(id);
 
-const create = (props: { title: string; columns: IColumn[]; }): Promise<IBoard> => {
+const create = (props: { title: string; columns: IColumn[] }): Promise<IBoard> => {
   const { title, columns } = props;
 
   const newBoard = new Board({
@@ -18,7 +18,7 @@ const create = (props: { title: string; columns: IColumn[]; }): Promise<IBoard> 
   return boardsRepo.create(newBoard);
 };
 
-const put = async (props: { id: string; title: string; columns: IColumn[]; }): Promise<IBoard> => {
+const put = async (props: { id: string; title: string; columns: IColumn[] }): Promise<IBoard> => {
   const { id, title, columns } = props;
 
   await get(id);

@@ -12,7 +12,11 @@ const app: Application = express();
 app.use(express.json());
 
 if (process.env['NODE_ENV'] !== 'production') {
-  app.use('/doc', swaggerUI.serve, swaggerUI.setup(YAML.load(path.join(__dirname, '../doc/api.yaml'))));
+  app.use(
+    '/doc',
+    swaggerUI.serve,
+    swaggerUI.setup(YAML.load(path.join(__dirname, '../doc/api.yaml'))),
+  );
 }
 
 app.use('/', (req: Request, res: Response, next: NextFunction) => {
@@ -31,9 +35,7 @@ boardRouter.use('/:boardId/tasks', taskRouter);
 
 app.use((err: Error, _req: Request, res: Response, next: NextFunction) => {
   process.stderr.write(err.message);
-  res
-    .status(StatusCodes.INTERNAL_SERVER_ERROR)
-    .send(`Something broke! Hz what: ${err.message}`);
+  res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`Something broke! Hz what: ${err.message}`);
   next();
 });
 
