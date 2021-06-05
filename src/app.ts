@@ -3,21 +3,27 @@ import YAML from 'yamljs';
 import path from 'path';
 import swaggerUI from 'swagger-ui-express';
 import StatusCodes from 'http-status-codes';
+
 import userRouter from './resources/users/user-router';
 import boardRouter from './resources/boards/board-router';
 import taskRouter from './resources/tasks/task-router';
+
+import * as logger from './logger/logger';
+import { NODE_ENV } from './common/config';
 
 const app: Application = express();
 
 app.use(express.json());
 
-if (process.env['NODE_ENV'] !== 'production') {
+if (NODE_ENV !== 'production') {
   app.use(
     '/doc',
     swaggerUI.serve,
     swaggerUI.setup(YAML.load(path.join(__dirname, '../doc/api.yaml'))),
   );
 }
+
+app.use(logger.info);
 
 app.use('/', (req: Request, res: Response, next: NextFunction) => {
   if (req.originalUrl === '/') {

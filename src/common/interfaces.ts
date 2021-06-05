@@ -53,6 +53,19 @@ interface ITaskBodyParser {
   columnId: string;
 }
 
+interface IJsonMessage {
+  Info?: string;
+  message?: string;
+  method?: string;
+  statusCode?: number;
+  url?: string;
+  ms?: number;
+}
+
+interface BodyBox<Type> {
+  contents: Type;
+}
+
 export {
   IUserToResponse,
   IUser,
@@ -62,4 +75,6 @@ export {
   IBoardBodyParser,
   ITask,
   ITaskBodyParser,
+  IJsonMessage,
+  BodyBox
 };
