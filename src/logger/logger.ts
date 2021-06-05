@@ -21,7 +21,7 @@ const fullUrl = (req: Request): string => Url.format({
 
 const hidePass = (body: BodyParser): BodyParser => body.password !== undefined ? { ...body, password: '*****' } : body;
 
-const writeLog = ({ textMessage, jsonMessage, logType }: PropsWriteLog) => {
+const writeLog = ({ textMessage, jsonMessage, logType }: PropsWriteLog): void => {
   switch (logType) {
     case 'info':
       streamInfoLog(`${JSON.stringify(jsonMessage)}\n`);
@@ -49,7 +49,7 @@ const serverInfo = (message: string): void => {
   writeLog({ textMessage, jsonMessage, logType: 'info' });
 };
 
-const info = (req: Request, res: Response, next: NextFunction) => {
+const info = (req: Request, res: Response, next: NextFunction): void => {
   const { method, query } = req;
   const body = req.body as BodyParser;
   const url = fullUrl(req);
@@ -59,7 +59,7 @@ const info = (req: Request, res: Response, next: NextFunction) => {
 
   next();
 
-  finished(res, () => {
+  finished(res, (): void => {
     const ms = Date.now() - startTime;
     const { statusCode } = res;
     const stampDate = new Date().toLocaleString();

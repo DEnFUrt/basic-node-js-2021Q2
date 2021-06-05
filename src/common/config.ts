@@ -25,5 +25,3 @@ export const LOG_REWRITE_OVERSIZE = 1048576 as number; // 1Mb = 1048576
 export const AUTH_MODE: boolean = process.env['AUTH_MODE'] === 'true';
 export const PORT: number = parseInt(process.env['PORT'], 10);
 export const { NODE_ENV, MONGO_CONNECTION_STRING, JWT_SECRET_KEY } = process.env;
-
-// export { PORT, NODE_ENV, MONGO_CONNECTION_STRING, JWT_SECRET_KEY, AUTH_MODE };
