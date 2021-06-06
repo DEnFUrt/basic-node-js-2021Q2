@@ -3,6 +3,6 @@ import { PORT } from './common/config';
 import * as logger from './logger/logger';
 
 app.listen(
-  PORT, () => 
+  PORT, (): void => 
     logger.serverInfo(`App is running on http://localhost:${PORT}`)
 );

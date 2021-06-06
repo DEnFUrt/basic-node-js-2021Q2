@@ -25,7 +25,7 @@ if (NODE_ENV !== 'production') {
 
 app.use(logger.info);
 
-app.use('/', (req: Request, res: Response, next: NextFunction) => {
+app.use('/', (req: Request, res: Response, next: NextFunction): void => {
   if (req.originalUrl === '/') {
     res.send('Service is running!');
     return;

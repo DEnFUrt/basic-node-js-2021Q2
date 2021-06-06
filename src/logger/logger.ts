@@ -13,7 +13,7 @@ import {
 type PropsWriteLog = { textMessage: string; jsonMessage: IJsonMessage; logType: string };
 type BodyParser = ITaskBodyParser & IBoardBodyParser & IUserBodyParser;
 
-const fullUrl = (req: Request): string => Url.format({
+const fullUrl = (req: Request): string => Url.format({ // Разобраться с новым методом
     protocol: req.protocol,
     host: req.get('host'),
     pathname: req.originalUrl
