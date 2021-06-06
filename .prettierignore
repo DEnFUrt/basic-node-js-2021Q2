@@ -1,0 +1,13 @@
+build/
+doc/
+jsdoc/
+test/
+node_modules/
+.github
+.vscode
+
+*.css
+*.html
+
+webpack.config.js
+serviceWorker.js
