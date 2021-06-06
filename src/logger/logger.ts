@@ -3,6 +3,8 @@ import Url from 'url';
 import { Response, Request, NextFunction } from 'express';
 import { streamConsLog, streamErrLog, streamInfoLog } from './streams';
 import { NODE_ENV } from '../common/config';
+import HttpError from '../utils/error-http';
+import InternalServerError from '../utils/error-internal';
 import { 
   IJsonMessage,
   ITaskBodyParser,
@@ -82,7 +84,7 @@ const info = (req: Request, res: Response, next: NextFunction): void => {
   });
 };
 
-const errorHandler = (err: Error): void => {
+const errorHandler = (err: InternalServerError): void => {
   const {
     message = 'message does not exist',
     stack = 'stack does not exist',
@@ -101,7 +103,7 @@ const errorHandler = (err: Error): void => {
   writeLog({ textMessage, jsonMessage, logType: 'error' });
 };
 
-const errorClientHandler = (err: Error, req: Request): void => {
+const errorClientHandler = (err: HttpError, req: Request): void => {
   const {
     message = 'message does not exist',
     stack = 'stack does not exist',
