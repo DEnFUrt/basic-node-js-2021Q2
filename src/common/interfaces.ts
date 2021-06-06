@@ -55,11 +55,14 @@ interface ITaskBodyParser {
 
 interface IJsonMessage {
   Info?: string;
+  Error?: string;
   message?: string;
   method?: string;
   statusCode?: number;
   url?: string;
   ms?: number;
+  status?: string;
+  stack?: string;
 }
 
 interface BodyBox<Type> {

@@ -82,10 +82,55 @@ const info = (req: Request, res: Response, next: NextFunction): void => {
   });
 };
 
+const errorHandler = (err: Error): void => {
+  const {
+    message = 'message does not exist',
+    stack = 'stack does not exist',
+    status = 'status does not exist' } = err;
+  const stampDate = new Date().toLocaleString();
+
+  const textMessage = `Error: ${stampDate} -> Status: ${status}, Message: ${message},\nStack: ${stack}`;
+
+  const jsonMessage = {
+    Error: stampDate,
+    status,
+    message,
+    stack
+  };
+
+  writeLog({ textMessage, jsonMessage, logType: 'error' });
+};
+
+const errorClientHandler = (err: Error, req: Request): void => {
+  const {
+    message = 'message does not exist',
+    stack = 'stack does not exist',
+    status = 'status does not exist'
+  } = err;
+  const { method = 'method does not exist' } = req;
+  const url = req ? fullUrl(req) : '';
+  const stampDate = new Date().toLocaleString();
+
+  const textMessage = `Error: ${stampDate} -> Method: ${method}, Status: ${status}, URL: ${url}, Message: ${message},\nStack: ${stack}`;
+
+  const jsonMessage = {
+    Error: stampDate,
+    method,
+    status,
+    url,
+    message,
+    stack
+  };
+
+  writeLog({ textMessage, jsonMessage, logType: 'error' });
+};
+
 
 const logger = {
   info,
   serverInfo,
+  errorHandler,
+  errorClientHandler
 };
 
 export = logger;
