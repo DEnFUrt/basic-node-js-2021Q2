@@ -1,9 +1,11 @@
+type PropsHttpError = { status: string; message: string; params: string };
+
 class HttpError extends Error {
   status: string;
 
   message: string;
   
-  constructor(status: string, message: string, params = 'none') {
+  constructor({status, message, params = 'none'}: PropsHttpError) {
     super(
       message || `${message}. With params: ${params}`
       );

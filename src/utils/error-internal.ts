@@ -5,10 +5,12 @@ class InternalServerError extends Error {
 
   message: string;
   
-  constructor(message: string, params = 'none') {
+  constructor(message: string, params?: string) {
     super(
       message ||
-        `Internal Server Error with: ${params}`
+        `Internal Server Error with params: ${
+          params !== undefined? params : 'undefined' 
+        }`
     );
     this.status = `${StatusCodes.INTERNAL_SERVER_ERROR}`;
     this.message = message;

@@ -14,6 +14,7 @@ import {
 
 type PropsWriteLog = { textMessage: string; jsonMessage: IJsonMessage; logType: string };
 type BodyParser = ITaskBodyParser & IBoardBodyParser & IUserBodyParser;
+type CbType = () => never;
 
 const fullUrl = (req: Request): string => Url.format({ // Разобраться с новым методом
     protocol: req.protocol,
@@ -84,7 +85,7 @@ const info = (req: Request, res: Response, next: NextFunction): void => {
   });
 };
 
-const errorHandler = (err: InternalServerError): void => {
+const errorsHandler = (err: InternalServerError, _cb?: CbType): void => {
   const {
     message = 'message does not exist',
     stack = 'stack does not exist',
@@ -103,7 +104,7 @@ const errorHandler = (err: InternalServerError): void => {
   writeLog({ textMessage, jsonMessage, logType: 'error' });
 };
 
-const errorClientHandler = (err: HttpError, req: Request): void => {
+const errorsClientHandler = (err: HttpError, req: Request): void => {
   const {
     message = 'message does not exist',
     stack = 'stack does not exist',
@@ -131,8 +132,8 @@ const errorClientHandler = (err: HttpError, req: Request): void => {
 const logger = {
   info,
   serverInfo,
-  errorHandler,
-  errorClientHandler
+  errorsHandler,
+  errorsClientHandler
 };
 
 export = logger;
