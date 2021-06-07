@@ -1,4 +1,4 @@
-type PropsHttpError = { status: string; message: string; params: string };
+type PropsHttpError = { status: string; message: string; params?: string };
 
 class HttpError extends Error {
   status: string;

@@ -65,10 +65,6 @@ interface IJsonMessage {
   stack?: string;
 }
 
-interface BodyBox<Type> {
-  contents: Type;
-}
-
 export {
   IUserToResponse,
   IUser,
@@ -79,5 +75,4 @@ export {
   ITask,
   ITaskBodyParser,
   IJsonMessage,
-  BodyBox
 };

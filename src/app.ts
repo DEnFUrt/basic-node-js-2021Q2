@@ -2,7 +2,6 @@ import express, { Application, Response, Request, NextFunction } from 'express';
 import YAML from 'yamljs';
 import path from 'path';
 import swaggerUI from 'swagger-ui-express';
-// import StatusCodes from 'http-status-codes';
 
 import userRouter from './resources/users/user-router';
 import boardRouter from './resources/boards/board-router';

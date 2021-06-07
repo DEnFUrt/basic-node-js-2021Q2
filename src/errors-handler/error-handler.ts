@@ -50,7 +50,7 @@ const errorHandler = (err: InternalServerError, _req: Request, res: Response, ne
 
 const uncaughtExceptionHandler = (err: InternalServerError): void => {
   logger.errorsHandler(transformError(err), (): never => exit(1));
-};
+}; // добавить сеттймаут
 
 const unhandledRejectionHandler = (reason: InternalServerError, promise: Promise<void>): void => {
   logger.errorsHandler(transformError(reason, promise));
