@@ -53,6 +53,7 @@ app.use(errorHandler);
 // throw Error('uncaughtException:  Oops!');
 
 // PUT IT HERE
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 // Promise.reject(Error('Promise: Oops!'));
 
 export default app;

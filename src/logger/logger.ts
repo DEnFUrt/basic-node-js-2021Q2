@@ -14,7 +14,7 @@ import {
 
 type PropsWriteLog = { textMessage: string; jsonMessage: IJsonMessage; logType: string };
 type BodyParser = ITaskBodyParser & IBoardBodyParser & IUserBodyParser;
-type CbType = () => never;
+type CbType = (exitCode: number) => never;
 
 const fullUrl = (req: Request): string => Url.format({ // Разобраться с новым методом
     protocol: req.protocol,

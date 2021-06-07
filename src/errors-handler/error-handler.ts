@@ -7,7 +7,6 @@ import InternalServerError from '../utils/error-internal';
 
 const transformError = (err: InternalServerError, promise?: Promise<void>): InternalServerError => ({
   ...err,
-  // status: StatusCodes.INTERNAL_SERVER_ERROR,
   message: `Internal Server Error: ${
     err.message
   }, ${JSON.stringify(promise) || ''}`
@@ -50,7 +49,7 @@ const errorHandler = (err: InternalServerError, _req: Request, res: Response, ne
 
 const uncaughtExceptionHandler = (err: InternalServerError): void => {
   logger.errorsHandler(transformError(err), (): never => exit(1));
-}; // добавить сеттймаут
+}; 
 
 const unhandledRejectionHandler = (reason: InternalServerError, promise: Promise<void>): void => {
   logger.errorsHandler(transformError(reason, promise));
