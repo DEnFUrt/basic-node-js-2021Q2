@@ -1,13 +1,13 @@
-import { IBoard, IColumn } from '../../common/interfaces';
+import { IColumn, IBoardResponse } from '../../common/interfaces';
 import * as boardsRepo from './board-memory-repository';
 import Board from './board-model';
 import * as tasksRepo from '../tasks/task-memory-repository';
 
-const getAll = (): Promise<IBoard[]> => boardsRepo.getAll();
+const getAll = (): Promise<IBoardResponse> => boardsRepo.getAll();
 
-const get = async (id: string): Promise<IBoard> => boardsRepo.get(id);
+const get = async (id: string): Promise<IBoardResponse> => boardsRepo.get(id);
 
-const create = (props: { title: string; columns: IColumn[] }): Promise<IBoard> => {
+const create = (props: { title: string; columns: IColumn[] }): Promise<IBoardResponse> => {
   const { title, columns } = props;
 
   const newBoard = new Board({
@@ -18,10 +18,13 @@ const create = (props: { title: string; columns: IColumn[] }): Promise<IBoard> =
   return boardsRepo.create(newBoard);
 };
 
-const put = async (props: { id: string; title: string; columns: IColumn[] }): Promise<IBoard> => {
+const put = async (props: { id: string; title: string; columns: IColumn[] }): Promise<IBoardResponse> => {
   const { id, title, columns } = props;
+  const result = await get(id);
 
-  await get(id);
+  if (result.statusCode !== 200) {
+    return result;
+  }
 
   const newBoard = new Board({
     id,
@@ -32,8 +35,13 @@ const put = async (props: { id: string; title: string; columns: IColumn[] }): Pr
   return boardsRepo.update({ id, newBoard });
 };
 
-const del = async (id: string): Promise<boolean> => {
-  await get(id);
+const del = async (id: string): Promise<IBoardResponse> => {
+  const result = await get(id);
+
+  if (result.statusCode !== 200) {
+    return result;
+  }
+
   await tasksRepo.delByBoradId(id);
 
   return boardsRepo.del(id);
