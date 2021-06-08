@@ -1,35 +1,37 @@
 import { Response, Request, Router } from 'express';
-import StatusCodes from 'http-status-codes';
 import asyncHandler from 'express-async-handler';
 import * as boardService from './board-service';
-import { IBoardBodyParser } from '../../common/interfaces';
+import { IBoardBodyParser, IBoardResponse } from '../../common/interfaces';
 // import HttpError from '../../utils/error-http';
 
 const router = Router();
 
 router.route('/').get(
   asyncHandler(async (_req: Request, res: Response): Promise<void> => {
-    const boards = await boardService.getAll();
+    const result = await boardService.getAll();
+    const { statusCode, sendMessage }: IBoardResponse = result;
 
-    res.json(boards);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
 router.route('/:id').get(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const id = req.params['id'] as string;
-    const board = await boardService.get(id);
+    const result = await boardService.get(id);
+    const { statusCode, sendMessage }: IBoardResponse = result;
 
-    res.json(board);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
 router.route('/').post(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { title, columns } = req.body as IBoardBodyParser;
-    const board = await boardService.create({ title, columns });
+    const result = await boardService.create({ title, columns });
+    const { statusCode, sendMessage }: IBoardResponse = result;
 
-    res.status(StatusCodes.CREATED).json(board);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
@@ -37,9 +39,10 @@ router.route('/:id').put(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const id = req.params['id'] as string;
     const { title, columns } = req.body as IBoardBodyParser;
-    const board = await boardService.put({ id, title, columns });
+    const result = await boardService.put({ id, title, columns });
+    const { statusCode, sendMessage }: IBoardResponse = result;
 
-    res.json(board);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
@@ -47,10 +50,9 @@ router.route('/:id').delete(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const id = req.params['id'] as string;
     const result = await boardService.del(id);
+    const { statusCode, sendMessage }: IBoardResponse = result;
 
-    if (result) {
-      res.status(StatusCodes.NO_CONTENT).send({ message: 'The board has been deleted' });
-    }
+    res.status(statusCode).json(sendMessage);
   })
 );
 

@@ -33,6 +33,11 @@ interface IBoardBodyParser {
   columns: IColumn[];
 }
 
+interface IBoardResponse {
+  statusCode: number;
+  sendMessage: IBoard | IBoard[] | string;
+}
+
 interface ITask {
   id: string;
   title: string;
@@ -65,6 +70,8 @@ interface IJsonMessage {
   stack?: string;
 }
 
+
+
 export {
   IUserToResponse,
   IUser,
@@ -75,4 +82,5 @@ export {
   ITask,
   ITaskBodyParser,
   IJsonMessage,
+  IBoardResponse,
 };
