@@ -59,7 +59,7 @@ const del = async (id: string): Promise<IUserResponse | ITaskResponse> => {
   if (resResetUserId.statusCode !== StatusCodes.NO_CONTENT) {
     return resResetUserId;
   }
-  
+
   return usersRepo.del(id);
 };
 

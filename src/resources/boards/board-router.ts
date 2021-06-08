@@ -6,53 +6,63 @@ import { IBoardBodyParser, IBoardResponse, ITaskResponse } from '../../common/in
 const router = Router();
 
 router.route('/').get(
-  asyncHandler(async (_req: Request, res: Response): Promise<void> => {
-    const result = await boardService.getAll();
-    const { statusCode, sendMessage }: IBoardResponse = result;
+  asyncHandler(
+    async (_req: Request, res: Response): Promise<void> => {
+      const result = await boardService.getAll();
+      const { statusCode, sendMessage }: IBoardResponse = result;
 
-    res.status(statusCode).json(sendMessage);
-  })
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/:id').get(
-  asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const id = req.params['id'] as string;
-    const result = await boardService.get(id);
-    const { statusCode, sendMessage }: IBoardResponse = result;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = req.params['id'] as string;
+      const result = await boardService.get(id);
+      const { statusCode, sendMessage }: IBoardResponse = result;
 
-    res.status(statusCode).json(sendMessage);
-  })
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/').post(
-  asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const { title, columns } = req.body as IBoardBodyParser;
-    const result = await boardService.create({ title, columns });
-    const { statusCode, sendMessage }: IBoardResponse = result;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const { title, columns } = req.body as IBoardBodyParser;
+      const result = await boardService.create({ title, columns });
+      const { statusCode, sendMessage }: IBoardResponse = result;
 
-    res.status(statusCode).json(sendMessage);
-  })
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/:id').put(
-  asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const id = req.params['id'] as string;
-    const { title, columns } = req.body as IBoardBodyParser;
-    const result = await boardService.put({ id, title, columns });
-    const { statusCode, sendMessage }: IBoardResponse = result;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = req.params['id'] as string;
+      const { title, columns } = req.body as IBoardBodyParser;
+      const result = await boardService.put({ id, title, columns });
+      const { statusCode, sendMessage }: IBoardResponse = result;
 
-    res.status(statusCode).json(sendMessage);
-  })
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/:id').delete(
-  asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const id = req.params['id'] as string;
-    const result = await boardService.del(id);
-    const { statusCode, sendMessage }: IBoardResponse | ITaskResponse = result;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = req.params['id'] as string;
+      const result = await boardService.del(id);
+      const { statusCode, sendMessage }: IBoardResponse | ITaskResponse = result;
 
-    res.status(statusCode).json(sendMessage);
-  })
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 export default router;

@@ -1,8 +1,14 @@
 import fs from 'fs';
 import { promisify } from 'util';
 import ph from 'path';
-import { stdout , stderr } from 'process';
-import { DIR_LOG, ERROR_LOG, INFO_LOG, LOG_REWRITE_EVERY_DAY, LOG_REWRITE_OVERSIZE } from '../common/config';
+import { stdout, stderr } from 'process';
+import {
+  DIR_LOG,
+  ERROR_LOG,
+  INFO_LOG,
+  LOG_REWRITE_EVERY_DAY,
+  LOG_REWRITE_OVERSIZE,
+} from '../common/config';
 
 const fsStat = promisify(fs.stat);
 const fsRename = promisify(fs.rename);
@@ -18,8 +24,8 @@ const renameFile = async ({ pathFile, nameFile, dir }: PropsRenameFileFunc): Pro
       pathFile,
       `${ph.format({
         dir,
-        base: nameFile
-      })}`
+        base: nameFile,
+      })}`,
     );
   } catch (e) {
     throw Error(e);
@@ -59,9 +65,10 @@ const createDir = async (pathDir: string): Promise<void> => {
   }
 };
 
-const createWritable = (pathFile: string): fs.WriteStream => fs.createWriteStream(pathFile, {
+const createWritable = (pathFile: string): fs.WriteStream =>
+  fs.createWriteStream(pathFile, {
     encoding: 'utf8',
-    flags: 'a'
+    flags: 'a',
   });
 
 const accessFile = async (pathFile: string): Promise<fs.WriteStream | null> => {
@@ -75,9 +82,7 @@ const accessFile = async (pathFile: string): Promise<fs.WriteStream | null> => {
         try {
           await createDir(DIR_LOG);
         } catch (err) {
-          stderr.write(
-            `Directory "${DIR_LOG}" creation error: ${(err as Error).message} /n`
-          );
+          stderr.write(`Directory "${DIR_LOG}" creation error: ${(err as Error).message} /n`);
           stderr.write(`The log file: "${pathFile}" does not exist /n`);
           return null;
         }
@@ -123,8 +128,4 @@ const streamConsLog: StreamsWriteFunc = (message) => {
   stream.write(message);
 };
 
-export {
-  streamConsLog,
-  streamErrLog,
-  streamInfoLog
-};
+export { streamConsLog, streamErrLog, streamInfoLog };

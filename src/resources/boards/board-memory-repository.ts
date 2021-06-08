@@ -10,11 +10,11 @@ const getAll = async (): Promise<IBoardResponse> => {
 
 const get = async (id: string): Promise<IBoardResponse> => {
   const result = DB.getBoard(id);
-  
+
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.NOT_FOUND,
-      sendMessage: `Board not found: The board with id: ${id} was not found`
+      sendMessage: `Board not found: The board with id: ${id} was not found`,
     };
   }
 
@@ -25,10 +25,12 @@ const create = async (newBoard: IBoard): Promise<IBoardResponse> => {
   const result = DB.createBoard(newBoard);
 
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.BAD_REQUEST,
-      sendMessage: `Bad request: The board was not created. /n With params: ${JSON.stringify(newBoard)}`
-    };    
+      sendMessage: `Bad request: The board was not created. /n With params: ${JSON.stringify(
+        newBoard,
+      )}`,
+    };
   }
 
   return { statusCode: StatusCodes.CREATED, sendMessage: result };
@@ -39,10 +41,12 @@ const update = async (props: { id: string; newBoard: IBoard }): Promise<IBoardRe
   const result = DB.updateBoard(props);
 
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.BAD_REQUEST,
-      sendMessage: `Bad request: The board with id: ${id} was not updated. /n With params: ${JSON.stringify(props)}`
-    };    
+      sendMessage: `Bad request: The board with id: ${id} was not updated. /n With params: ${JSON.stringify(
+        props,
+      )}`,
+    };
   }
 
   return { statusCode: StatusCodes.OK, sendMessage: result };
@@ -52,10 +56,10 @@ const del = async (id: string): Promise<IBoardResponse> => {
   const result = DB.delBoard(id);
 
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.NOT_FOUND,
-      sendMessage: `Board not found: The board with id: ${id} was not deleted`
-    };    
+      sendMessage: `Board not found: The board with id: ${id} was not deleted`,
+    };
   }
 
   return { statusCode: StatusCodes.NO_CONTENT, sendMessage: 'The board has been deleted' };

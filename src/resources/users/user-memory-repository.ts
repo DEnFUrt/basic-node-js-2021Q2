@@ -16,7 +16,7 @@ const get = async (id: string): Promise<IUserResponse> => {
   if (user === null) {
     return {
       statusCode: StatusCodes.NOT_FOUND,
-      sendMessage: `User not found: The user with id: ${id} was not found`
+      sendMessage: `User not found: The user with id: ${id} was not found`,
     };
   }
 
@@ -31,7 +31,9 @@ const create = async (newUser: IUser): Promise<IUserResponse> => {
   if (user === null) {
     return {
       statusCode: StatusCodes.BAD_REQUEST,
-      sendMessage: `Bad request: The user was not created. /n With params: ${JSON.stringify(newUser)}`
+      sendMessage: `Bad request: The user was not created. /n With params: ${JSON.stringify(
+        newUser,
+      )}`,
     };
   }
 
@@ -47,7 +49,9 @@ const update = async (props: { id: string; newUser: IUser }): Promise<IUserRespo
   if (user === null) {
     return {
       statusCode: StatusCodes.BAD_REQUEST,
-      sendMessage: `Bad request: The user with id: ${id} was not updated. /n With params: ${JSON.stringify(props)}`
+      sendMessage: `Bad request: The user with id: ${id} was not updated. /n With params: ${JSON.stringify(
+        props,
+      )}`,
     };
   }
 
@@ -62,7 +66,7 @@ const del = async (id: string): Promise<IUserResponse> => {
   if (result === null) {
     return {
       statusCode: StatusCodes.NOT_FOUND,
-      sendMessage: `User not found: The user with id: ${id} was not deleted`
+      sendMessage: `User not found: The user with id: ${id} was not deleted`,
     };
   }
 

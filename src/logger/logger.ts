@@ -5,18 +5,19 @@ import { NODE_ENV } from '../common/config';
 import HttpError from '../utils/error-http';
 import InternalServerError from '../utils/error-internal';
 import { fullUrl } from '../utils/full-url';
-import { 
+import {
   IJsonMessage,
   ITaskBodyParser,
   IBoardBodyParser,
-  IUserBodyParser
+  IUserBodyParser,
 } from '../common/interfaces';
 
 type PropsWriteLog = { textMessage: string; jsonMessage: IJsonMessage; logType: string };
 type BodyParser = ITaskBodyParser & IBoardBodyParser & IUserBodyParser;
 type CbType = (exitCode: number) => never;
 
-const hidePass = (body: BodyParser): BodyParser => body.password !== undefined ? { ...body, password: '*****' } : body;
+const hidePass = (body: BodyParser): BodyParser =>
+  body.password !== undefined ? { ...body, password: '*****' } : body;
 
 const writeLog = ({ textMessage, jsonMessage, logType }: PropsWriteLog): void => {
   switch (logType) {
@@ -40,7 +41,7 @@ const serverInfo = (message: string): void => {
 
   const jsonMessage = {
     Info: stampDate,
-    message
+    message,
   };
 
   writeLog({ textMessage, jsonMessage, logType: 'info' });
@@ -62,7 +63,7 @@ const info = (req: Request, res: Response, next: NextFunction): void => {
     const stampDate = new Date().toLocaleString();
 
     const textMessage = `Info: ${stampDate} -> ${method}, ${statusCode} url: ${url}, query: ${JSON.stringify(
-      query
+      query,
     )}, body: ${JSON.stringify(permittedBody)} - [${ms} ms.]`;
 
     const jsonMessage = {
@@ -72,7 +73,7 @@ const info = (req: Request, res: Response, next: NextFunction): void => {
       url,
       query,
       body: permittedBody,
-      ms
+      ms,
     };
 
     writeLog({ textMessage, jsonMessage, logType: 'info' });
@@ -83,7 +84,8 @@ const errorsHandler = (err: InternalServerError, _cb?: CbType): void => {
   const {
     message = 'message does not exist',
     stack = 'stack does not exist',
-    status = 'status does not exist' } = err;
+    status = 'status does not exist',
+  } = err;
   const stampDate = new Date().toLocaleString();
 
   const textMessage = `Error: ${stampDate} -> Status: ${status}, Message: ${message},\nStack: ${stack}`;
@@ -92,7 +94,7 @@ const errorsHandler = (err: InternalServerError, _cb?: CbType): void => {
     Error: stampDate,
     status,
     message,
-    stack
+    stack,
   };
 
   writeLog({ textMessage, jsonMessage, logType: 'error' });
@@ -102,7 +104,7 @@ const errorsClientHandler = (err: HttpError, req: Request): void => {
   const {
     message = 'message does not exist',
     stack = 'stack does not exist',
-    status = 'status does not exist'
+    status = 'status does not exist',
   } = err;
   const { method = 'method does not exist' } = req;
   const url = req ? fullUrl(req) : '';
@@ -116,18 +118,17 @@ const errorsClientHandler = (err: HttpError, req: Request): void => {
     status,
     url,
     message,
-    stack
+    stack,
   };
 
   writeLog({ textMessage, jsonMessage, logType: 'error' });
 };
 
-
 const logger = {
   info,
   serverInfo,
   errorsHandler,
-  errorsClientHandler
+  errorsClientHandler,
 };
 
 export = logger;

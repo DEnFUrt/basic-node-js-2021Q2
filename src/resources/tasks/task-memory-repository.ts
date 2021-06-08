@@ -13,9 +13,9 @@ const getByBoardId = async (props: { taskId: string; boardId: string }): Promise
   const result = DB.getTask(props);
 
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.NOT_FOUND,
-      sendMessage: `Task not found: The task with id: ${taskId} for board with id: ${boardId} was not found`
+      sendMessage: `Task not found: The task with id: ${taskId} for board with id: ${boardId} was not found`,
     };
   }
 
@@ -26,9 +26,11 @@ const create = async (newTask: ITask): Promise<ITaskResponse> => {
   const result = DB.createTask(newTask);
 
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.BAD_REQUEST,
-      sendMessage: `Bad request: The task was not created. /n With params: ${JSON.stringify(newTask)}`
+      sendMessage: `Bad request: The task was not created. /n With params: ${JSON.stringify(
+        newTask,
+      )}`,
     };
   }
 
@@ -50,10 +52,12 @@ const update = async (props: {
   const result = DB.updateTask(props);
 
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.BAD_REQUEST,
-      sendMessage: `Bad request: The task with id: ${taskId} for board with id: ${boardId} was not updated. /n With params: ${JSON.stringify(props)}`
-    };    
+      sendMessage: `Bad request: The task with id: ${taskId} for board with id: ${boardId} was not updated. /n With params: ${JSON.stringify(
+        props,
+      )}`,
+    };
   }
 
   return { statusCode: StatusCodes.OK, sendMessage: result };
@@ -64,10 +68,10 @@ const del = async (props: { boardId: string; taskId: string }): Promise<ITaskRes
   const result = DB.delTask(props);
 
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.NOT_FOUND,
-      sendMessage: `Task not found: The task with id: ${taskId} for board with id: ${boardId} was not deleted`
-    };    
+      sendMessage: `Task not found: The task with id: ${taskId} for board with id: ${boardId} was not deleted`,
+    };
   }
 
   return { statusCode: StatusCodes.NO_CONTENT, sendMessage: 'The task has been deleted' };
@@ -77,26 +81,32 @@ const delByBoradId = async (boardId: string): Promise<ITaskResponse> => {
   const result = DB.delTaskByBoardId(boardId);
 
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
-      sendMessage: `The tasks by board with id: ${boardId} was not deleted`
-    };    
+      sendMessage: `The tasks by board with id: ${boardId} was not deleted`,
+    };
   }
 
-  return { statusCode: StatusCodes.NO_CONTENT, sendMessage: `The tasks by board with id: ${boardId} has been deleted` };
+  return {
+    statusCode: StatusCodes.NO_CONTENT,
+    sendMessage: `The tasks by board with id: ${boardId} has been deleted`,
+  };
 };
 
 const resetUserId = async (userId: string): Promise<ITaskResponse> => {
   const result = DB.resetUserIdInTasks(userId);
 
   if (result === null) {
-    return { 
+    return {
       statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
-      sendMessage: `Tasks where User with id: ${userId} is assignee should be was not updated`
-    };    
+      sendMessage: `Tasks where User with id: ${userId} is assignee should be was not updated`,
+    };
   }
 
-  return { statusCode: StatusCodes.NO_CONTENT, sendMessage: `Tasks where User with id: ${userId} has been deleted` };
+  return {
+    statusCode: StatusCodes.NO_CONTENT,
+    sendMessage: `Tasks where User with id: ${userId} has been deleted`,
+  };
 };
 
 export { getAllByBoardId, getByBoardId, create, update, del, delByBoradId, resetUserId };

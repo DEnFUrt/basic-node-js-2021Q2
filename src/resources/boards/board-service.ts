@@ -19,7 +19,11 @@ const create = (props: { title: string; columns: IColumn[] }): Promise<IBoardRes
   return boardsRepo.create(newBoard);
 };
 
-const put = async (props: { id: string; title: string; columns: IColumn[] }): Promise<IBoardResponse> => {
+const put = async (props: {
+  id: string;
+  title: string;
+  columns: IColumn[];
+}): Promise<IBoardResponse> => {
   const { id, title, columns } = props;
   const result = await get(id);
 

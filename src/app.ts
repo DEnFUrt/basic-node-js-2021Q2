@@ -9,11 +9,7 @@ import taskRouter from './resources/tasks/task-router';
 
 import * as logger from './logger/logger';
 import { NODE_ENV } from './common/config';
-import {
-  errorNotFound,
-  errorClientHandler,
-  errorHandler,
-} from './errors-handler/error-handler';
+import { errorNotFound, errorClientHandler, errorHandler } from './errors-handler/error-handler';
 
 const app: Application = express();
 
