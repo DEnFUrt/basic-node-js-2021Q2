@@ -1,4 +1,5 @@
-import { IUserResponse } from '../../common/interfaces';
+import StatusCodes from 'http-status-codes';
+import { IUserResponse, ITaskResponse } from '../../common/interfaces';
 import * as usersRepo from './user-memory-repository';
 import User from './user-model';
 import * as tasksRepo from '../tasks/task-memory-repository';
@@ -32,7 +33,7 @@ const put = async (props: {
   const { id, name, login, password } = props;
   const result = await get(id);
 
-  if (result.statusCode !== 200) {
+  if (result.statusCode !== StatusCodes.OK) {
     return result;
   }
 
@@ -46,15 +47,19 @@ const put = async (props: {
   return usersRepo.update({ id, newUser });
 };
 
-const del = async (id: string): Promise<IUserResponse> => {
+const del = async (id: string): Promise<IUserResponse | ITaskResponse> => {
   const result = await get(id);
 
-  if (result.statusCode !== 200) {
+  if (result.statusCode !== StatusCodes.OK) {
     return result;
   }
-  
-  await tasksRepo.resetUserId(id);
 
+  const resResetUserId = await tasksRepo.resetUserId(id);
+
+  if (resResetUserId.statusCode !== StatusCodes.NO_CONTENT) {
+    return resResetUserId;
+  }
+  
   return usersRepo.del(id);
 };
 

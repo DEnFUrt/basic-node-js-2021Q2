@@ -1,8 +1,7 @@
 import { Response, Request, Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import * as boardService from './board-service';
-import { IBoardBodyParser, IBoardResponse } from '../../common/interfaces';
-// import HttpError from '../../utils/error-http';
+import { IBoardBodyParser, IBoardResponse, ITaskResponse } from '../../common/interfaces';
 
 const router = Router();
 
@@ -50,7 +49,7 @@ router.route('/:id').delete(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const id = req.params['id'] as string;
     const result = await boardService.del(id);
-    const { statusCode, sendMessage }: IBoardResponse = result;
+    const { statusCode, sendMessage }: IBoardResponse | ITaskResponse = result;
 
     res.status(statusCode).json(sendMessage);
   })

@@ -1,17 +1,17 @@
 import { Response, Request, Router } from 'express';
-import StatusCodes from 'http-status-codes';
 import asyncHandler from 'express-async-handler';
 import * as taskService from './task-service';
-import { ITaskBodyParser } from '../../common/interfaces';
+import { ITaskBodyParser, ITaskResponse, IBoardResponse } from '../../common/interfaces';
 
 const router = Router({ mergeParams: true });
 
 router.route('/').get(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const boardId = req.params['boardId'] as string;
-    const tasks = await taskService.getAllByBoardId(boardId);
-    
-    res.json(tasks);
+    const result = await taskService.getAllByBoardId(boardId);
+    const { statusCode, sendMessage }: ITaskResponse = result;
+
+    res.status(statusCode).json(sendMessage);
   })
 );
 
@@ -19,9 +19,10 @@ router.route('/:id').get(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const boardId = req.params['boardId'] as string;
     const taskId = req.params['id'] as string;
-    const task = await taskService.getByBoardId({ boardId, taskId });
+    const result = await taskService.getByBoardId({ boardId, taskId });
+    const { statusCode, sendMessage }: ITaskResponse = result;
 
-    res.json(task);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
@@ -29,7 +30,7 @@ router.route('/').post(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const boardId = req.params['boardId'] as string;
     const { title, order, description, userId, columnId } = req.body as ITaskBodyParser;
-    const task = await taskService.create({
+    const result = await taskService.create({
       title,
       order,
       description,
@@ -37,8 +38,9 @@ router.route('/').post(
       columnId,
       boardId,
     });
+    const { statusCode, sendMessage }: ITaskResponse | IBoardResponse = result;
 
-    res.status(StatusCodes.CREATED).json(task);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
@@ -47,7 +49,7 @@ router.route('/:id').put(
     const boardId = req.params['boardId'] as string;
     const taskId = req.params['id'] as string;
     const { title, order, description, userId, columnId } = req.body as ITaskBodyParser;
-    const task = await taskService.put({
+    const result = await taskService.put({
       boardId,
       taskId,
       title,
@@ -56,7 +58,9 @@ router.route('/:id').put(
       userId,
       columnId,
     });
-    res.json(task);
+    const { statusCode, sendMessage }: ITaskResponse = result;
+
+    res.status(statusCode).json(sendMessage);
   })
 );
 
@@ -65,10 +69,9 @@ router.route('/:id').delete(
     const boardId = req.params['boardId'] as string;
     const taskId = req.params['id'] as string;
     const result = await taskService.del({ boardId, taskId });
+    const { statusCode, sendMessage }: ITaskResponse = result;
 
-    if (result) {
-      res.status(StatusCodes.OK).send({ message: 'The task has been deleted' });
-    }
+    res.status(statusCode).json(sendMessage);
   })
 );
 

@@ -1,7 +1,7 @@
 import { Response, Request, Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import * as usersService from './user-service';
-import { IUserBodyParser, IUserResponse } from '../../common/interfaces';
+import { IUserBodyParser, IUserResponse, ITaskResponse } from '../../common/interfaces';
 
 const router = Router();
 
@@ -49,7 +49,7 @@ router.route('/:id').delete(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const id = req.params['id'] as string;
     const result = await usersService.del(id);
-    const { statusCode, sendMessage }: IUserResponse = result;
+    const { statusCode, sendMessage }: IUserResponse | ITaskResponse = result;
 
     res.status(statusCode).json(sendMessage);
   })

@@ -1,4 +1,5 @@
-import { IColumn, IBoardResponse } from '../../common/interfaces';
+import StatusCodes from 'http-status-codes';
+import { IColumn, IBoardResponse, ITaskResponse } from '../../common/interfaces';
 import * as boardsRepo from './board-memory-repository';
 import Board from './board-model';
 import * as tasksRepo from '../tasks/task-memory-repository';
@@ -22,7 +23,7 @@ const put = async (props: { id: string; title: string; columns: IColumn[] }): Pr
   const { id, title, columns } = props;
   const result = await get(id);
 
-  if (result.statusCode !== 200) {
+  if (result.statusCode !== StatusCodes.OK) {
     return result;
   }
 
@@ -35,14 +36,18 @@ const put = async (props: { id: string; title: string; columns: IColumn[] }): Pr
   return boardsRepo.update({ id, newBoard });
 };
 
-const del = async (id: string): Promise<IBoardResponse> => {
+const del = async (id: string): Promise<IBoardResponse | ITaskResponse> => {
   const result = await get(id);
 
-  if (result.statusCode !== 200) {
+  if (result.statusCode !== StatusCodes.OK) {
     return result;
   }
 
-  await tasksRepo.delByBoradId(id);
+  const resDelByBoradId = await tasksRepo.delByBoradId(id);
+
+  if (resDelByBoradId.statusCode !== StatusCodes.NO_CONTENT) {
+    return resDelByBoradId;
+  }
 
   return boardsRepo.del(id);
 };

@@ -63,6 +63,11 @@ interface ITaskBodyParser {
   columnId: string;
 }
 
+interface ITaskResponse {
+  statusCode: number;
+  sendMessage: ITask | ITask[] | string;
+}
+
 interface IJsonMessage {
   Info?: string;
   Error?: string;
@@ -75,8 +80,6 @@ interface IJsonMessage {
   stack?: string;
 }
 
-
-
 export {
   IUserToResponse,
   IUser,
@@ -85,8 +88,9 @@ export {
   IBoard,
   IColumn,
   IBoardBodyParser,
+  IBoardResponse,
   ITask,
   ITaskBodyParser,
+  ITaskResponse,
   IJsonMessage,
-  IBoardResponse,
 };
