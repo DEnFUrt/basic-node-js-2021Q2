@@ -1,10 +1,10 @@
 import { finished } from 'stream';
-import Url from 'url';
 import { Response, Request, NextFunction } from 'express';
 import { streamConsLog, streamErrLog, streamInfoLog } from './streams';
 import { NODE_ENV } from '../common/config';
 import HttpError from '../utils/error-http';
 import InternalServerError from '../utils/error-internal';
+import { fullUrl } from '../utils/full-url';
 import { 
   IJsonMessage,
   ITaskBodyParser,
@@ -15,12 +15,6 @@ import {
 type PropsWriteLog = { textMessage: string; jsonMessage: IJsonMessage; logType: string };
 type BodyParser = ITaskBodyParser & IBoardBodyParser & IUserBodyParser;
 type CbType = (exitCode: number) => never;
-
-const fullUrl = (req: Request): string => Url.format({ // Разобраться с новым методом
-    protocol: req.protocol,
-    host: req.get('host'),
-    pathname: req.originalUrl
-  });
 
 const hidePass = (body: BodyParser): BodyParser => body.password !== undefined ? { ...body, password: '*****' } : body;
 
