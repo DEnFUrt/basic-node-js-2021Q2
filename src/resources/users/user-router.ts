@@ -1,34 +1,36 @@
 import { Response, Request, Router } from 'express';
-import StatusCodes from 'http-status-codes';
 import asyncHandler from 'express-async-handler';
 import * as usersService from './user-service';
-import { IUserBodyParser } from '../../common/interfaces';
+import { IUserBodyParser, IUserResponse } from '../../common/interfaces';
 
 const router = Router();
 
 router.route('/').get(
   asyncHandler(async (_req: Request, res: Response): Promise<void> => {
-    const users = await usersService.getAll();
+    const result = await usersService.getAll();
+    const { statusCode, sendMessage }: IUserResponse = result;
 
-    res.json(users);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
 router.route('/:id').get(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const id = req.params['id'] as string;
-    const user = await usersService.get(id);
+    const result = await usersService.get(id);
+    const { statusCode, sendMessage }: IUserResponse = result;
 
-    res.json(user);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
 router.route('/').post(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { name, login, password } = req.body as IUserBodyParser;
-    const user = await usersService.create({ name, login, password });
+    const result = await usersService.create({ name, login, password });
+    const { statusCode, sendMessage }: IUserResponse = result;
 
-    res.status(StatusCodes.CREATED).json(user);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
@@ -36,9 +38,10 @@ router.route('/:id').put(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const id = req.params['id'] as string;
     const { name, login, password } = req.body as IUserBodyParser;
-    const user = await usersService.put({ id, name, login, password });
+    const result = await usersService.put({ id, name, login, password });
+    const { statusCode, sendMessage }: IUserResponse = result;
 
-    res.json(user);
+    res.status(statusCode).json(sendMessage);
   })
 );
 
@@ -46,10 +49,9 @@ router.route('/:id').delete(
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const id = req.params['id'] as string;
     const result = await usersService.del(id);
+    const { statusCode, sendMessage }: IUserResponse = result;
 
-    if (result) {
-      res.status(StatusCodes.NO_CONTENT).send({ message: 'The user has been deleted' });
-    }
+    res.status(statusCode).json(sendMessage);
   })
 );
 

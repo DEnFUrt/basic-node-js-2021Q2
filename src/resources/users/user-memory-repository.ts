@@ -1,65 +1,72 @@
 import StatusCodes from 'http-status-codes';
 import * as DB from '../../common/inTempUserDB';
-import { IUser } from '../../common/interfaces';
-import HttpError from '../../utils/error-http';
+import User from './user-model';
+import { IUser, IUserResponse } from '../../common/interfaces';
 
-const getAll = async (): Promise<IUser[]> => {
-  const result = DB.getAllUsers();
+const getAll = async (): Promise<IUserResponse> => {
+  const users = DB.getAllUsers();
+  const result = users.map((user) => User.toResponse(user));
 
-  return result;
+  return { statusCode: StatusCodes.OK, sendMessage: result };
 };
 
-const get = async (id: string): Promise<IUser> => {
-  const result = DB.getUser(id);
+const get = async (id: string): Promise<IUserResponse> => {
+  const user = DB.getUser(id);
 
-  if (result === null) {
-    throw new HttpError({
-      message: `User not found: The user with id: ${id} was not found`,
-      status: `${StatusCodes.NOT_FOUND}`,
-    });
+  if (user === null) {
+    return {
+      statusCode: StatusCodes.NOT_FOUND,
+      sendMessage: `User not found: The user with id: ${id} was not found`
+    };
   }
 
-  return result;
+  const result = User.toResponse(user);
+
+  return { statusCode: StatusCodes.OK, sendMessage: result };
 };
 
-const create = async (newUser: IUser): Promise<IUser> => {
-  const result = DB.createUser(newUser);
+const create = async (newUser: IUser): Promise<IUserResponse> => {
+  const user = DB.createUser(newUser);
 
-  if (result === null) {
-    throw new HttpError({
-      message: `Bad request: The user was not created./n With params: ${JSON.stringify(newUser)}`,
-      status: `${StatusCodes.BAD_REQUEST}`,
-    });
+  if (user === null) {
+    return {
+      statusCode: StatusCodes.BAD_REQUEST,
+      sendMessage: `Bad request: The user was not created. /n With params: ${JSON.stringify(newUser)}`
+    };
   }
 
-  return result;
+  const result = User.toResponse(user);
+
+  return { statusCode: StatusCodes.CREATED, sendMessage: result };
 };
 
-const update = async (props: { id: string; newUser: IUser }): Promise<IUser> => {
+const update = async (props: { id: string; newUser: IUser }): Promise<IUserResponse> => {
   const { id } = props;
-  const result = DB.updateUser(props);
+  const user = DB.updateUser(props);
 
-  if (result === null) {
-    throw new HttpError({
-      message: `Bad request: The user with id: ${id} was not updated./n With params: ${JSON.stringify(props)}`,
-      status: `${StatusCodes.BAD_REQUEST}`,
-    });
+  if (user === null) {
+    return {
+      statusCode: StatusCodes.BAD_REQUEST,
+      sendMessage: `Bad request: The user with id: ${id} was not updated. /n With params: ${JSON.stringify(props)}`
+    };
   }
 
-  return result;
+  const result = User.toResponse(user);
+
+  return { statusCode: StatusCodes.OK, sendMessage: result };
 };
 
-const del = async (id: string): Promise<boolean> => {
+const del = async (id: string): Promise<IUserResponse> => {
   const result = DB.delUser(id);
 
   if (result === null) {
-    throw new HttpError({
-      message: `User not found: The user with id: ${id} was not deleted`,
-      status: `${StatusCodes.NOT_FOUND}`,
-    });
+    return {
+      statusCode: StatusCodes.NOT_FOUND,
+      sendMessage: `User not found: The user with id: ${id} was not deleted`
+    };
   }
 
-  return result;
+  return { statusCode: StatusCodes.NO_CONTENT, sendMessage: 'The user has been deleted' };
 };
 
 export { getAll, get, create, update, del };

@@ -27,7 +27,7 @@ const create = async (newBoard: IBoard): Promise<IBoardResponse> => {
   if (result === null) {
     return { 
       statusCode: StatusCodes.BAD_REQUEST,
-      sendMessage: `Bad request: The board was not created./n With params: ${JSON.stringify(newBoard)}`
+      sendMessage: `Bad request: The board was not created. /n With params: ${JSON.stringify(newBoard)}`
     };    
   }
 
@@ -41,7 +41,7 @@ const update = async (props: { id: string; newBoard: IBoard }): Promise<IBoardRe
   if (result === null) {
     return { 
       statusCode: StatusCodes.BAD_REQUEST,
-      sendMessage: `Bad request: The board with id: ${id} was not updated./n With params: ${JSON.stringify(props)}`
+      sendMessage: `Bad request: The board with id: ${id} was not updated. /n With params: ${JSON.stringify(props)}`
     };    
   }
 
@@ -53,7 +53,7 @@ const del = async (id: string): Promise<IBoardResponse> => {
 
   if (result === null) {
     return { 
-      statusCode: StatusCodes.BAD_REQUEST,
+      statusCode: StatusCodes.NOT_FOUND,
       sendMessage: `Board not found: The board with id: ${id} was not deleted`
     };    
   }

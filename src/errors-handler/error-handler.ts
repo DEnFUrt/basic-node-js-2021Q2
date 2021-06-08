@@ -18,12 +18,6 @@ const errorNotFound = (req: Request, res: Response, next: NextFunction): void =>
   res.status(StatusCodes.NOT_FOUND).send(`message: Couldn't find a(an) URL: ${fullUrl(req)}`);
   
   next();
-  /* next(
-    new HttpError({
-      message: `Couldn't find a(an) URL: ${fullUrl(req)}`,
-      status: `${StatusCodes.NOT_FOUND}`,
-    })
-  ); */
 };
 
 const errorClientHandler = (err: HttpError | InternalServerError, req: Request, res: Response, next: NextFunction): void => {

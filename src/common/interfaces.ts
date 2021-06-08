@@ -15,6 +15,11 @@ interface IUserBodyParser {
   login: string;
 }
 
+interface IUserResponse {
+  statusCode: number;
+  sendMessage: IUserToResponse | IUserToResponse[] | string;
+}
+
 interface IBoard {
   id: string;
   title: string;
@@ -76,6 +81,7 @@ export {
   IUserToResponse,
   IUser,
   IUserBodyParser,
+  IUserResponse,
   IBoard,
   IColumn,
   IBoardBodyParser,
