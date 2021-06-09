@@ -1,79 +1,68 @@
 import { Response, Request, Router } from 'express';
-import StatusCodes from 'http-status-codes';
+import asyncHandler from 'express-async-handler';
 import * as boardService from './board-service';
-import { IBoardBodyParser } from '../../common/interfaces';
+import { IBoardBodyParser, IBoardResponse, ITaskResponse } from '../../common/interfaces';
 
 const router = Router();
 
 router.route('/').get(
-  async (_req: Request, res: Response): Promise<void> => {
-    const boards = await boardService.getAll();
+  asyncHandler(
+    async (_req: Request, res: Response): Promise<void> => {
+      const result = await boardService.getAll();
+      const { statusCode, sendMessage }: IBoardResponse = result;
 
-    res.json(boards);
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/:id').get(
-  async (req: Request, res: Response): Promise<void> => {
-    const id = req.params['id'] as string;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = req.params['id'] as string;
+      const result = await boardService.get(id);
+      const { statusCode, sendMessage }: IBoardResponse = result;
 
-    try {
-      const board = await boardService.get(id);
-
-      res.json(board);
-    } catch (e) {
-      res
-        .status(StatusCodes.NOT_FOUND)
-        .send({ message: `Board not found: ${(e as Error).message}` });
-    }
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/').post(
-  async (req: Request, res: Response): Promise<void> => {
-    const { title, columns } = req.body as IBoardBodyParser;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const { title, columns } = req.body as IBoardBodyParser;
+      const result = await boardService.create({ title, columns });
+      const { statusCode, sendMessage }: IBoardResponse = result;
 
-    try {
-      const board = await boardService.create({ title, columns });
-
-      res.status(StatusCodes.CREATED).json(board);
-    } catch (e) {
-      res.status(StatusCodes.BAD_REQUEST).send({ message: `Bad request: ${(e as Error).message}` });
-    }
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/:id').put(
-  async (req: Request, res: Response): Promise<void> => {
-    const id = req.params['id'] as string;
-    const { title, columns } = req.body as IBoardBodyParser;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = req.params['id'] as string;
+      const { title, columns } = req.body as IBoardBodyParser;
+      const result = await boardService.put({ id, title, columns });
+      const { statusCode, sendMessage }: IBoardResponse = result;
 
-    try {
-      const board = await boardService.put({ id, title, columns });
-
-      res.json(board);
-    } catch (e) {
-      res.status(StatusCodes.BAD_REQUEST).send({ message: `Bad request: ${(e as Error).message}` });
-    }
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/:id').delete(
-  async (req: Request, res: Response): Promise<void> => {
-    const id = req.params['id'] as string;
-
-    try {
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = req.params['id'] as string;
       const result = await boardService.del(id);
+      const { statusCode, sendMessage }: IBoardResponse | ITaskResponse = result;
 
-      if (result) {
-        res.status(StatusCodes.NO_CONTENT).send({ message: 'The board has been deleted' });
-      }
-    } catch (e) {
-      res
-        .status(StatusCodes.NOT_FOUND)
-        .send({ message: `Board not found: ${(e as Error).message}` });
-    }
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 export default router;

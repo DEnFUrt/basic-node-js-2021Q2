@@ -1,79 +1,68 @@
 import { Response, Request, Router } from 'express';
-import StatusCodes from 'http-status-codes';
+import asyncHandler from 'express-async-handler';
 import * as usersService from './user-service';
-import { IUserBodyParser } from '../../common/interfaces';
+import { IUserBodyParser, IUserResponse, ITaskResponse } from '../../common/interfaces';
 
 const router = Router();
 
 router.route('/').get(
-  async (_req: Request, res: Response): Promise<void> => {
-    const users = await usersService.getAll();
+  asyncHandler(
+    async (_req: Request, res: Response): Promise<void> => {
+      const result = await usersService.getAll();
+      const { statusCode, sendMessage }: IUserResponse = result;
 
-    res.json(users);
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/:id').get(
-  async (req: Request, res: Response): Promise<void> => {
-    const id = req.params['id'] as string;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = req.params['id'] as string;
+      const result = await usersService.get(id);
+      const { statusCode, sendMessage }: IUserResponse = result;
 
-    try {
-      const user = await usersService.get(id);
-
-      res.json(user);
-    } catch (e) {
-      res
-        .status(StatusCodes.NOT_FOUND)
-        .send({ message: `User not found: ${(e as Error).message}` });
-    }
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/').post(
-  async (req: Request, res: Response): Promise<void> => {
-    const { name, login, password } = req.body as IUserBodyParser;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const { name, login, password } = req.body as IUserBodyParser;
+      const result = await usersService.create({ name, login, password });
+      const { statusCode, sendMessage }: IUserResponse = result;
 
-    try {
-      const user = await usersService.create({ name, login, password });
-
-      res.status(StatusCodes.CREATED).json(user);
-    } catch (e) {
-      res.status(StatusCodes.BAD_REQUEST).send({ message: `Bad request: ${(e as Error).message}` });
-    }
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/:id').put(
-  async (req: Request, res: Response): Promise<void> => {
-    const id = req.params['id'] as string;
-    const { name, login, password } = req.body as IUserBodyParser;
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = req.params['id'] as string;
+      const { name, login, password } = req.body as IUserBodyParser;
+      const result = await usersService.put({ id, name, login, password });
+      const { statusCode, sendMessage }: IUserResponse = result;
 
-    try {
-      const user = await usersService.put({ id, name, login, password });
-
-      res.json(user);
-    } catch (e) {
-      res.status(StatusCodes.BAD_REQUEST).send({ message: `Bad request: ${(e as Error).message}` });
-    }
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 router.route('/:id').delete(
-  async (req: Request, res: Response): Promise<void> => {
-    const id = req.params['id'] as string;
-
-    try {
+  asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = req.params['id'] as string;
       const result = await usersService.del(id);
+      const { statusCode, sendMessage }: IUserResponse | ITaskResponse = result;
 
-      if (result) {
-        res.status(StatusCodes.NO_CONTENT).send({ message: 'The user has been deleted' });
-      }
-    } catch (e) {
-      res
-        .status(StatusCodes.NOT_FOUND)
-        .send({ message: `User not found: ${(e as Error).message}` });
-    }
-  },
+      res.status(statusCode).json(sendMessage);
+    },
+  ),
 );
 
 export default router;

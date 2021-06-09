@@ -15,6 +15,11 @@ interface IUserBodyParser {
   login: string;
 }
 
+interface IUserResponse {
+  statusCode: number;
+  sendMessage: IUserToResponse | IUserToResponse[] | string;
+}
+
 interface IBoard {
   id: string;
   title: string;
@@ -31,6 +36,11 @@ interface IBoardBodyParser {
   id?: string;
   title: string;
   columns: IColumn[];
+}
+
+interface IBoardResponse {
+  statusCode: number;
+  sendMessage: IBoard | IBoard[] | string;
 }
 
 interface ITask {
@@ -53,13 +63,34 @@ interface ITaskBodyParser {
   columnId: string;
 }
 
+interface ITaskResponse {
+  statusCode: number;
+  sendMessage: ITask | ITask[] | string;
+}
+
+interface IJsonMessage {
+  Info?: string;
+  Error?: string;
+  message?: string;
+  method?: string;
+  statusCode?: number;
+  url?: string;
+  ms?: number;
+  status?: string;
+  stack?: string;
+}
+
 export {
   IUserToResponse,
   IUser,
   IUserBodyParser,
+  IUserResponse,
   IBoard,
   IColumn,
   IBoardBodyParser,
+  IBoardResponse,
   ITask,
   ITaskBodyParser,
+  ITaskResponse,
+  IJsonMessage,
 };

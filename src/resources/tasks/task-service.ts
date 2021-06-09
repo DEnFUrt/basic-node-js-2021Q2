@@ -1,11 +1,13 @@
-import { ITask } from '../../common/interfaces';
+import StatusCodes from 'http-status-codes';
+import { ITaskResponse, IBoardResponse } from '../../common/interfaces';
 import * as tasksRepo from './task-memory-repository';
 import Task from './task-model';
 import * as boardsRepo from '../boards/board-memory-repository';
 
-const getAllByBoardId = (boardId: string): Promise<ITask[]> => tasksRepo.getAllByBoardId(boardId);
+const getAllByBoardId = (boardId: string): Promise<ITaskResponse> =>
+  tasksRepo.getAllByBoardId(boardId);
 
-const getByBoardId = (props: { boardId: string; taskId: string }): Promise<ITask> =>
+const getByBoardId = (props: { boardId: string; taskId: string }): Promise<ITaskResponse> =>
   tasksRepo.getByBoardId(props);
 
 const create = async (props: {
@@ -15,10 +17,13 @@ const create = async (props: {
   userId: string;
   boardId: string;
   columnId: string;
-}): Promise<ITask> => {
+}): Promise<ITaskResponse | IBoardResponse> => {
   const { title, order, description, userId, boardId, columnId } = props;
+  const result = await boardsRepo.get(boardId);
 
-  await boardsRepo.get(boardId);
+  if (result.statusCode !== StatusCodes.OK) {
+    return result;
+  }
 
   const newTask = new Task({
     title,
@@ -40,10 +45,13 @@ const put = async (props: {
   userId: string;
   boardId: string;
   columnId: string;
-}): Promise<ITask> => {
+}): Promise<ITaskResponse> => {
   const { taskId, title, order, description, userId, boardId, columnId } = props;
+  const result = await getByBoardId({ boardId, taskId });
 
-  await getByBoardId({ boardId, taskId });
+  if (result.statusCode !== StatusCodes.OK) {
+    return result;
+  }
 
   const newTask = new Task({
     id: taskId,
@@ -58,10 +66,13 @@ const put = async (props: {
   return tasksRepo.update({ boardId, taskId, newTask });
 };
 
-const del = async (props: { boardId: string; taskId: string }): Promise<boolean> => {
+const del = async (props: { boardId: string; taskId: string }): Promise<ITaskResponse> => {
   const { boardId, taskId } = props;
+  const result = await getByBoardId({ boardId, taskId });
 
-  await getByBoardId({ boardId, taskId });
+  if (result.statusCode !== StatusCodes.OK) {
+    return result;
+  }
 
   return tasksRepo.del({ boardId, taskId });
 };
