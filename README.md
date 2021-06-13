@@ -11,7 +11,7 @@
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 ```
 
-## Switch to the Task4 branch
+## Switch to the Task6 branch
 
 ```
 git checkout task6
