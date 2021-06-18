@@ -1,5 +1,5 @@
 import path from 'path';
-import {ConnectionOptions} from 'typeorm';
+import { ConnectionOptions } from 'typeorm';
 import { PG_HOST, PG_USER, PG_PASSWORD, PG_DB, PG_PORT, PG_NO_LOGS, PG_NO_SYNC } from './config';
 
 const isCompiled = path.extname(__filename).includes('js');
@@ -16,20 +16,12 @@ export default {
   autoReconnect: true,
   reconnectTries: Number.MAX_VALUE,
   reconnectInterval: 1000,
-  entities: [
-    `src/resources/entity/**/*.${isCompiled ? 'js' : 'ts'}`
-  ],
-  migrations: [
-    `src/resources/migration/**/*.${isCompiled ? 'js' : 'ts'}`
-  ],
-  subscribers: [
-    `src/resources/subscriber/**/*.${isCompiled ? 'js' : 'ts'}`
-  ],
-  
-/*   cli: {
+  entities: [`src/resources/entity/**/*.${isCompiled ? 'js' : 'ts'}`],
+  migrations: [`src/resources/migration/**/*.${isCompiled ? 'js' : 'ts'}`],
+  subscribers: [`src/resources/subscriber/**/*.${isCompiled ? 'js' : 'ts'}`],
+
+  /*   cli: {
     'entitiesDir': 'src/entity',
     'migrationsDir': 'src/migration',
   }, */
 } as ConnectionOptions;
-
-

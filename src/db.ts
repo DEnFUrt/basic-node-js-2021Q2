@@ -1,14 +1,13 @@
-import {createConnection, Connection, getConnection} from "typeorm";
+import { createConnection, Connection, getConnection } from 'typeorm';
 import ORMConfig from './common/ormconfig';
-import InternalServerError from "./utils/error-internal";
-
+import InternalServerError from './utils/error-internal';
 
 export const connectPg = async (): Promise<void> => {
   let connection: Connection | undefined;
 
   try {
     connection = getConnection();
-  } catch { 
+  } catch {
     try {
       if (connection) {
         if (!connection.isConnected) {
@@ -19,7 +18,6 @@ export const connectPg = async (): Promise<void> => {
       }
     } catch (e) {
       throw new InternalServerError((e as Error).message, (e as Error).stack);
-    };
-  };
+    }
+  }
 };
-  

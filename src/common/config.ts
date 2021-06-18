@@ -29,4 +29,3 @@ export const { NODE_ENV, JWT_SECRET_KEY } = process.env;
 export const { PG_HOST, PG_USER, PG_PASSWORD, PG_DB, PG_PORT } = process.env;
 export const PG_NO_SYNC = true;
 export const PG_NO_LOGS = true;
-

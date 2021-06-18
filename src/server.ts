@@ -12,13 +12,11 @@ process.on('unhandledRejection', unhandledRejectionHandler);
 // eslint-disable-next-line import/first
 import app from './app';
 
- connectPg()
+connectPg()
   .then(() => {
-    logger.serverInfo(`Connected to PostgresSql DB: example - ${<string>PG_HOST}, port - ${<string>PG_PORT}`);
+    logger.serverInfo(
+      `Connected to PostgresSql DB: example - ${<string>PG_HOST}, port - ${<string>PG_PORT}`,
+    );
     app.listen(PORT, (): void => logger.serverInfo(`App is running on http://localhost:${PORT}`));
-    }
-  ) 
-  .catch (
-    (e) => logger.errorsHandler(e)
-  );
-
+  })
+  .catch((e) => logger.errorsHandler(e));
