@@ -9,7 +9,7 @@
   "description": "REST service starter for RS School",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon -L --exitcrash",
+    "dev": "nodemon",
     "build": "tsc",
     "start": "ts-node src/server.ts",
     "lint": "eslint --ext .ts --fix src/",
@@ -54,8 +54,11 @@
     "express": "4.17.1",
     "express-async-handler": "^1.1.4",
     "http-status-codes": "^2.1.4",
+    "pg": "^8.6.0",
     "prettier-plugin-jsdoc": "^0.3.22",
+    "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "4.1.6",
+    "typeorm": "^0.2.34",
     "uuid": "8.3.2",
     "yamljs": "0.3.0"
   },
