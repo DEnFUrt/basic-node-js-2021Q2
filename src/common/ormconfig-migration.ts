@@ -1,12 +1,12 @@
 import path from 'path';
 import { ConnectionOptions } from 'typeorm';
-import { PG_HOST, PG_USER, PG_PASSWORD, PG_DB, PG_PORT, PG_NO_LOGS, PG_NO_SYNC } from './config';
+import { PG_USER, PG_PASSWORD, PG_DB, PG_PORT, PG_NO_LOGS, PG_NO_SYNC } from './config';
 
 const isCompiled = path.extname(__filename).includes('js');
 
 export default {
   type: 'postgres',
-  host: PG_HOST || 'localhost',
+  host: 'localhost',
   port: PG_PORT ? parseInt(PG_PORT, 10) : 5432,
   username: PG_USER || 'postgres',
   password: PG_PASSWORD || 'postgres',
