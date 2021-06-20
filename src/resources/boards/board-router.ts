@@ -63,6 +63,6 @@ router.route('/:id').delete(
       res.status(statusCode).json(sendMessage);
     },
   ),
-); 
+);
 
 export default router;

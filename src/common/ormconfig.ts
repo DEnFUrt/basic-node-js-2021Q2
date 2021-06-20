@@ -20,7 +20,7 @@ export default {
   migrations: [`src/resources/migration/**/*.${isCompiled ? 'js' : 'ts'}`],
   subscribers: [`src/resources/subscriber/**/*.${isCompiled ? 'js' : 'ts'}`],
   cli: {
-    'entitiesDir': 'src/resources/entity',
-    'migrationsDir': 'src/resources/migration',
+    entitiesDir: 'src/resources/entity',
+    migrationsDir: 'src/resources/migration',
   },
 } as ConnectionOptions;

@@ -30,14 +30,14 @@ const del = async (id: string): Promise<IBoardResponse | ITaskResponse> => {
     return result;
   }
 
-   const resDelTaskByBoradId = await tasksRepo.delTaskByBoradId(id);
-   const { statusCode, sendMessage } = resDelTaskByBoradId;
-  
-   if (statusCode === OK && typeof sendMessage === 'string' ) {
-     logger.serverInfo(sendMessage);
-   }
+  const resDelTaskByBoradId = await tasksRepo.delTaskByBoradId(id);
+  const { statusCode, sendMessage } = resDelTaskByBoradId;
+
+  if (statusCode === OK && typeof sendMessage === 'string') {
+    logger.serverInfo(sendMessage);
+  }
 
   return boardsRepo.del(id);
-}; 
+};
 
 export { getAll, get, create, put, del };

@@ -10,7 +10,7 @@ const getAll = async (): Promise<IUserResponse> => usersRepo.getAll();
 
 const get = async (id: string): Promise<IUserResponse> => usersRepo.get(id);
 
-const create = async(props: IUserBodyParser): Promise<IUserResponse> => usersRepo.create(props);
+const create = async (props: IUserBodyParser): Promise<IUserResponse> => usersRepo.create(props);
 
 const put = async (props: IUserBodyParser): Promise<IUserResponse> => {
   const { id } = props;
@@ -32,8 +32,8 @@ const del = async (id: string): Promise<IUserResponse | ITaskResponse> => {
 
   const resNullifyUserId = await tasksRepo.nullifyUserId(id);
   const { statusCode, sendMessage } = resNullifyUserId;
-  
-  if (statusCode === OK && typeof sendMessage === 'string' ) {
+
+  if (statusCode === OK && typeof sendMessage === 'string') {
     logger.serverInfo(sendMessage);
   }
 

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Board } from './board';
 
 @Entity()
@@ -6,16 +6,16 @@ export class Columns {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column('varchar', {length: 100})
+  @Column('varchar', { length: 100 })
   title = 'Title Column';
 
   @Column('smallint')
-  order = 0
+  order = 0;
 
-  @ManyToOne(() => Board, board => board.columns, {
-	cascade: true,
-	onDelete: 'CASCADE',
-	onUpdate: 'CASCADE',
+  @ManyToOne(() => Board, (board) => board.columns, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   board!: Board;
-};
+}

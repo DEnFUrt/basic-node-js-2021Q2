@@ -6,8 +6,8 @@ import { IUser, IUserResponse, IUserToResponse, IUserBodyParser } from '../../co
 const { NOT_FOUND, OK, CREATED, NO_CONTENT } = StatusCodes;
 
 const toResponse = (user: IUser): IUserToResponse => {
-    const { id, name, login } = user;
-    return { id, name, login };
+  const { id, name, login } = user;
+  return { id, name, login };
 };
 
 const getAll = async (): Promise<IUserResponse> => {
@@ -18,7 +18,7 @@ const getAll = async (): Promise<IUserResponse> => {
 };
 
 const get = async (id: string): Promise<IUserResponse> => {
-    const user = await getRepository(User).findOne(id);
+  const user = await getRepository(User).findOne(id);
 
   if (user === undefined) {
     return {
@@ -43,7 +43,7 @@ const create = async (newUser: IUserBodyParser): Promise<IUserResponse> => {
 
 const update = async (props: IUserBodyParser): Promise<IUserResponse> => {
   const savedUser = await getRepository(User).save(props);
-  
+
   const result = toResponse(savedUser);
 
   return { statusCode: OK, sendMessage: result };
@@ -51,7 +51,7 @@ const update = async (props: IUserBodyParser): Promise<IUserResponse> => {
 
 const del = async (id: string): Promise<IUserResponse> => {
   const result = await getRepository(User).delete(id);
-  
+
   if (!result.affected) {
     return {
       statusCode: NOT_FOUND,

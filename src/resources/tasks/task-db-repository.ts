@@ -13,7 +13,7 @@ const getAllByBoardId = async (boardId: string): Promise<ITaskResponse> => {
 
 const getByBoardId = async (props: { taskId: string; boardId: string }): Promise<ITaskResponse> => {
   const { taskId, boardId } = props;
-  const result = await getRepository(Task).findOne({id: taskId, boardId});
+  const result = await getRepository(Task).findOne({ id: taskId, boardId });
 
   if (result === undefined) {
     return {
@@ -41,13 +41,7 @@ const update = async (props: {
   boardId: string;
   columnId: string;
 }): Promise<ITaskResponse> => {
-  const { taskId,
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId } = props;
+  const { taskId, title, order, description, userId, boardId, columnId } = props;
   const newTask = {
     id: taskId,
     title,
@@ -55,7 +49,7 @@ const update = async (props: {
     description,
     userId,
     boardId,
-    columnId
+    columnId,
   };
 
   const savedTask = await getRepository(Task).save(newTask);
@@ -65,7 +59,7 @@ const update = async (props: {
 
 const del = async (props: { boardId: string; taskId: string }): Promise<ITaskResponse> => {
   const { boardId, taskId } = props;
-  const result = await getRepository(Task).delete({id: taskId, boardId});
+  const result = await getRepository(Task).delete({ id: taskId, boardId });
 
   if (!result.affected) {
     return {
@@ -97,4 +91,4 @@ const nullifyUserId = async (userId: string): Promise<ITaskResponse> => {
   };
 };
 
-export { getAllByBoardId, getByBoardId, create, update, del , delTaskByBoradId, nullifyUserId };
+export { getAllByBoardId, getByBoardId, create, update, del, delTaskByBoradId, nullifyUserId };
