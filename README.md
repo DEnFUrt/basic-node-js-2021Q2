@@ -11,10 +11,10 @@
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 ```
 
-## Switch to the Task6 branch
+## Switch to the Task7 branch
 
 ```
-git checkout task6
+git checkout task7
 ```
 ## Running multi-container Docker applications:
 
@@ -23,6 +23,16 @@ git checkout task6
 
 ```
 docker-compose up
+```
+3. Creating a migration file with the command
+
+```
+npm run migration:generation -n createTable 
+```
+4. Application of migration with the command
+
+```
+npm run migration
 ```
 
 ## Launching a local application, setting up the environment
