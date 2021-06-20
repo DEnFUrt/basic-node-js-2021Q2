@@ -2,7 +2,7 @@ import StatusCodes from 'http-status-codes';
 import { ITaskResponse, IBoardResponse } from '../../common/interfaces';
 import * as tasksRepo from './task-memory-repository';
 import Task from './task-model';
-import * as boardsRepo from '../boards/board-memory-repository';
+import * as boardsRepo from '../boards/board-db-repository';
 
 const getAllByBoardId = (boardId: string): Promise<ITaskResponse> =>
   tasksRepo.getAllByBoardId(boardId);
