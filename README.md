@@ -11,11 +11,21 @@
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 ```
 
-## Switch to the Task4 branch
+## Switch to the Task6 branch
 
 ```
-git checkout task4
+git checkout task6
 ```
+## Running multi-container Docker applications:
+
+1. Install docker compose
+2. Start the application stack with the command
+
+```
+docker-compose up
+```
+
+## Launching a local application, setting up the environment
 
 ## Installing NPM modules
 
@@ -27,18 +37,6 @@ npm install
 
 ```
 npm run start
-```
-
-To run the application, you need to create a .env file with the following content:
-
-```
-// .env
-NODE_ENV=development
-PORT=4000
-AUTH_MODE=false
-JWT_SECRET_KEY=secret-key
-# Set your database connection information here
-MONGO_CONNECTION_STRING=your-mongo-db-connection-string
 ```
 
 After starting the app on port (4000 as default) you can open

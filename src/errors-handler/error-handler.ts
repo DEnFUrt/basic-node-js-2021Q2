@@ -56,7 +56,9 @@ const errorHandler = (
 };
 
 const uncaughtExceptionHandler = (err: InternalServerError): void => {
-  logger.errorsHandler(transformError(err), (): never => exit(1));
+  logger.errorsHandler(transformError(err));
+
+  setTimeout((): never => exit(1), 10);
 };
 
 const unhandledRejectionHandler = (reason: InternalServerError, promise: Promise<void>): void => {
