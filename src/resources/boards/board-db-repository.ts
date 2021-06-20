@@ -4,7 +4,7 @@ import { Board } from '../entity/board';
 import { Columns } from '../entity/column';
 import { IBoardBodyParser, IBoardResponse } from '../../common/interfaces';
 
-const { NOT_FOUND, OK, BAD_REQUEST, CREATED, NO_CONTENT } = StatusCodes;
+const { NOT_FOUND, OK, CREATED, NO_CONTENT } = StatusCodes;
 
 const getAll = async (): Promise<IBoardResponse> => {
     const result = await getRepository(Board).find({ relations: [ 'columns' ] });
@@ -30,37 +30,13 @@ const get = async (id: string): Promise<IBoardResponse> => {
     await getRepository(Columns).save(columns);
 
     const board = getRepository(Board).create({...props, columns});
-		// const board = getRepository(Board).create(props);
     const savedBoard = await getRepository(Board).save(board);
-  
-    if (savedBoard === undefined) {
-      return {
-        statusCode: BAD_REQUEST,
-        sendMessage: `Bad request: The board was not created. /n With params: ${JSON.stringify(
-          props,
-        )}`,
-      };
-    }
-  
+    
     return { statusCode: CREATED, sendMessage: savedBoard };
   };
 
   const update = async (props: IBoardBodyParser): Promise<IBoardResponse> => {
-    const { id } = props;
-
-		
-		// await getRepository(Columns).save(columns);
-
     const savedBoard = await getRepository(Board).save(props);
-  
-    if (savedBoard === undefined) {
-      return {
-        statusCode: BAD_REQUEST,
-        sendMessage: `Bad request: The board with id: ${<string>id} was not updated. /n With params: ${JSON.stringify(
-          props,
-        )}`,
-      };
-    }
   
     return { statusCode: OK, sendMessage: savedBoard };
   };

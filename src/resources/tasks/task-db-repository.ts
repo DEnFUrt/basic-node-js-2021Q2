@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 import { Task } from '../entity/task';
 import { ITaskBodyParser, ITaskResponse } from '../../common/interfaces';
 
-const { NOT_FOUND, OK, BAD_REQUEST, CREATED, NO_CONTENT,/*  UNPROCESSABLE_ENTITY */ } = StatusCodes;
+const { NOT_FOUND, OK, CREATED, NO_CONTENT } = StatusCodes;
 
 const getAllByBoardId = async (boardId: string): Promise<ITaskResponse> => {
   const result = await getRepository(Task).find({ boardId });
@@ -28,15 +28,6 @@ const getByBoardId = async (props: { taskId: string; boardId: string }): Promise
 const create = async (newTask: ITaskBodyParser): Promise<ITaskResponse> => {
   const task = getRepository(Task).create(newTask);
   const savedTask = await getRepository(Task).save(task);
-
-  if (savedTask === undefined) {
-    return {
-      statusCode: BAD_REQUEST,
-      sendMessage: `Bad request: The task was not created. /n With params: ${JSON.stringify(
-        newTask,
-      )}`,
-    };
-  }
 
   return { statusCode: CREATED, sendMessage: savedTask };
 };
@@ -66,16 +57,8 @@ const update = async (props: {
     boardId,
     columnId
   };
-  const savedTask = await getRepository(Task).save(newTask);
 
-  if (savedTask === undefined) {
-    return {
-      statusCode: BAD_REQUEST,
-      sendMessage: `Bad request: The task with id: ${taskId} for board with id: ${boardId} was not updated. /n With params: ${JSON.stringify(
-        props,
-      )}`,
-    };
-  }
+  const savedTask = await getRepository(Task).save(newTask);
 
   return { statusCode: OK, sendMessage: savedTask };
 };
@@ -94,36 +77,24 @@ const del = async (props: { boardId: string; taskId: string }): Promise<ITaskRes
   return { statusCode: NO_CONTENT, sendMessage: 'The task has been deleted' };
 };
 
-/* const delByBoradId = async (boardId: string): Promise<ITaskResponse> => {
-  const result = DB.delTaskByBoardId(boardId);
-
-  if (result === null) {
-    return {
-      statusCode: UNPROCESSABLE_ENTITY,
-      sendMessage: `The tasks by board with id: ${boardId} was not deleted`,
-    };
-  }
+const delTaskByBoradId = async (boardId: string): Promise<ITaskResponse> => {
+  const result = await getRepository(Task).delete({ boardId });
+  const delTaskCount = !result.affected ? 0 : result.affected;
 
   return {
-    statusCode: NO_CONTENT,
-    sendMessage: `The tasks by board with id: ${boardId} has been deleted`,
+    statusCode: OK,
+    sendMessage: `Removed tasks for boards with ID: ${boardId} in the amount - ${delTaskCount} pcs.`,
   };
 };
 
-const resetUserId = async (userId: string): Promise<ITaskResponse> => {
-  const result = DB.resetUserIdInTasks(userId);
-
-  if (result === null) {
-    return {
-      statusCode: UNPROCESSABLE_ENTITY,
-      sendMessage: `Tasks where User with id: ${userId} is assignee should be was not updated`,
-    };
-  }
+const nullifyUserId = async (userId: string): Promise<ITaskResponse> => {
+  const result = await getRepository(Task).update({ userId }, { userId: null });
+  const nullifyUserTaskCount = !result.affected ? 0 : result.affected;
 
   return {
-    statusCode: NO_CONTENT,
-    sendMessage: `Tasks where User with id: ${userId} has been deleted`,
+    statusCode: OK,
+    sendMessage: `Tasks where User with id: ${userId} has been nullify in the amount - ${nullifyUserTaskCount} pcs.`,
   };
-}; */
+};
 
-export { getAllByBoardId, getByBoardId, create, update, del/* , delByBoradId, resetUserId */ };
+export { getAllByBoardId, getByBoardId, create, update, del , delTaskByBoradId, nullifyUserId };

@@ -1,9 +1,10 @@
 import StatusCodes from 'http-status-codes';
 import { IBoardResponse, IBoardBodyParser, ITaskResponse } from '../../common/interfaces';
 import * as boardsRepo from './board-db-repository';
-// import * as tasksRepo from '../tasks/task-memory-repository';
+import * as tasksRepo from '../tasks/task-db-repository';
+import * as logger from '../../logger/logger';
 
-const { OK/* , NO_CONTENT */ } = StatusCodes;
+const { OK } = StatusCodes;
 
 const getAll = (): Promise<IBoardResponse> => boardsRepo.getAll();
 
@@ -29,11 +30,12 @@ const del = async (id: string): Promise<IBoardResponse | ITaskResponse> => {
     return result;
   }
 
-/*   const resDelByBoradId = await tasksRepo.delByBoradId(id);
-
-  if (resDelByBoradId.statusCode !== NO_CONTENT) {
-    return resDelByBoradId;
-  } */
+   const resDelTaskByBoradId = await tasksRepo.delTaskByBoradId(id);
+   const { statusCode, sendMessage } = resDelTaskByBoradId;
+  
+   if (statusCode === OK && typeof sendMessage === 'string' ) {
+     logger.serverInfo(sendMessage);
+   }
 
   return boardsRepo.del(id);
 }; 

@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 import { User } from '../entity/user';
 import { IUser, IUserResponse, IUserToResponse, IUserBodyParser } from '../../common/interfaces';
 
-const { NOT_FOUND, OK, BAD_REQUEST, CREATED, NO_CONTENT } = StatusCodes;
+const { NOT_FOUND, OK, CREATED, NO_CONTENT } = StatusCodes;
 
 const toResponse = (user: IUser): IUserToResponse => {
     const { id, name, login } = user;
@@ -36,34 +36,14 @@ const create = async (newUser: IUserBodyParser): Promise<IUserResponse> => {
   const user = getRepository(User).create(newUser);
   const savedUser = await getRepository(User).save(user);
 
-  if (savedUser === undefined) {
-    return {
-      statusCode: BAD_REQUEST,
-      sendMessage: `Bad request: The user was not created. /n With params: ${JSON.stringify(
-        newUser,
-      )}`,
-    };
-  }
-
   const result = toResponse(savedUser);
 
   return { statusCode: CREATED, sendMessage: result };
 };
 
 const update = async (props: IUserBodyParser): Promise<IUserResponse> => {
-  const { id } = props;
-
   const savedUser = await getRepository(User).save(props);
   
-  if (savedUser === undefined) {
-    return {
-      statusCode: BAD_REQUEST,
-      sendMessage: `Bad request: The user with id: ${<string>id} was not updated. /n With params: ${JSON.stringify(
-        props,
-      )}`,
-    };
-  }
-
   const result = toResponse(savedUser);
 
   return { statusCode: OK, sendMessage: result };
