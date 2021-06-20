@@ -53,7 +53,7 @@ const create = async (newUser: IUserBodyParser): Promise<IUserResponse> => {
 const update = async (props: IUserBodyParser): Promise<IUserResponse> => {
   const { id } = props;
 
-const savedUser = await getRepository(User).save(props);
+  const savedUser = await getRepository(User).save(props);
   
   if (savedUser === undefined) {
     return {

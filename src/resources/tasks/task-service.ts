@@ -1,8 +1,9 @@
 import StatusCodes from 'http-status-codes';
-import { ITaskResponse, IBoardResponse } from '../../common/interfaces';
-import * as tasksRepo from './task-memory-repository';
-import Task from './task-model';
+import { ITaskResponse, IBoardResponse, ITaskBodyParser } from '../../common/interfaces';
+import * as tasksRepo from './task-db-repository';
 import * as boardsRepo from '../boards/board-db-repository';
+
+const { OK } = StatusCodes;
 
 const getAllByBoardId = (boardId: string): Promise<ITaskResponse> =>
   tasksRepo.getAllByBoardId(boardId);
@@ -10,31 +11,15 @@ const getAllByBoardId = (boardId: string): Promise<ITaskResponse> =>
 const getByBoardId = (props: { boardId: string; taskId: string }): Promise<ITaskResponse> =>
   tasksRepo.getByBoardId(props);
 
-const create = async (props: {
-  title: string;
-  order: number;
-  description: string;
-  userId: string;
-  boardId: string;
-  columnId: string;
-}): Promise<ITaskResponse | IBoardResponse> => {
-  const { title, order, description, userId, boardId, columnId } = props;
+const create = async (props: ITaskBodyParser): Promise<ITaskResponse | IBoardResponse> => {
+  const { boardId } = props;
   const result = await boardsRepo.get(boardId);
 
-  if (result.statusCode !== StatusCodes.OK) {
+  if (result.statusCode !== OK) {
     return result;
   }
 
-  const newTask = new Task({
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId,
-  });
-
-  return tasksRepo.create(newTask);
+  return tasksRepo.create(props);
 };
 
 const put = async (props: {
@@ -46,31 +31,21 @@ const put = async (props: {
   boardId: string;
   columnId: string;
 }): Promise<ITaskResponse> => {
-  const { taskId, title, order, description, userId, boardId, columnId } = props;
+  const { taskId, boardId } = props;
   const result = await getByBoardId({ boardId, taskId });
 
-  if (result.statusCode !== StatusCodes.OK) {
+  if (result.statusCode !== OK) {
     return result;
   }
 
-  const newTask = new Task({
-    id: taskId,
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId,
-  });
-
-  return tasksRepo.update({ boardId, taskId, newTask });
+  return tasksRepo.update(props);
 };
 
 const del = async (props: { boardId: string; taskId: string }): Promise<ITaskResponse> => {
   const { boardId, taskId } = props;
   const result = await getByBoardId({ boardId, taskId });
 
-  if (result.statusCode !== StatusCodes.OK) {
+  if (result.statusCode !== OK) {
     return result;
   }
 

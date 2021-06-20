@@ -1,9 +1,9 @@
 import StatusCodes from 'http-status-codes';
 import { IUserResponse, ITaskResponse, IUserBodyParser } from '../../common/interfaces';
 import * as usersRepo from './user-db-repository';
-import * as tasksRepo from '../tasks/task-memory-repository';
+// import * as tasksRepo from '../tasks/task-db-repository';
 
-const { OK, NO_CONTENT } = StatusCodes;
+const { OK, /* NO_CONTENT */ } = StatusCodes;
 
 const getAll = async (): Promise<IUserResponse> => usersRepo.getAll();
 
@@ -29,11 +29,11 @@ const del = async (id: string): Promise<IUserResponse | ITaskResponse> => {
     return result;
   }
 
-  const resResetUserId = await tasksRepo.resetUserId(id);
+  /* const resResetUserId = await tasksRepo.resetUserId(id);
 
   if (resResetUserId.statusCode !== NO_CONTENT) {
     return resResetUserId;
-  }
+  } */
 
   return usersRepo.del(id);
 };
