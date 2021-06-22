@@ -71,24 +71,4 @@ const del = async (props: { boardId: string; taskId: string }): Promise<ITaskRes
   return { statusCode: NO_CONTENT, sendMessage: 'The task has been deleted' };
 };
 
-const delTaskByBoradId = async (boardId: string): Promise<ITaskResponse> => {
-  const result = await getRepository(Task).delete({ boardId });
-  const delTaskCount = !result.affected ? 0 : result.affected;
-
-  return {
-    statusCode: OK,
-    sendMessage: `Removed tasks for boards with ID: ${boardId} in the amount - ${delTaskCount} pcs.`,
-  };
-};
-
-const nullifyUserId = async (userId: string): Promise<ITaskResponse> => {
-  const result = await getRepository(Task).update({ userId }, { userId: null });
-  const nullifyUserTaskCount = !result.affected ? 0 : result.affected;
-
-  return {
-    statusCode: OK,
-    sendMessage: `Tasks where User with id: ${userId} has been nullify in the amount - ${nullifyUserTaskCount} pcs.`,
-  };
-};
-
-export { getAllByBoardId, getByBoardId, create, update, del, delTaskByBoradId, nullifyUserId };
+export { getAllByBoardId, getByBoardId, create, update, del };

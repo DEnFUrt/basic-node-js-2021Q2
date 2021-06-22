@@ -15,12 +15,15 @@
     "lint": "eslint --ext .ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
-    "prettier": "prettier src/ --write",
-    
+    "prettier": "prettier src/ --write",    
     "typeorm":"node --require ts-node/register ./node_modules/typeorm/cli.js --config src/common/ormconfig-migration.ts",
+    "typeorm:sh":"node --require ts-node/register ./node_modules/typeorm/cli.js --config src/common/ormconfig.ts",
     "migration": "npm run typeorm migration:run",
     "migration:generation": "npm run typeorm migration:generate -- -n",
-    "migration:revert": "npm run typeorm migration:revert"
+    "migration:revert": "npm run typeorm migration:revert",
+    "migration:sh": "npm run typeorm:sh migration:run",
+    "migration:sh:generation": "npm run typeorm:sh migration:generate -- -n",
+    "migration:sh:revert": "npm run typeorm:sh migration:revert"
   },
   "keywords": [
     "rs",

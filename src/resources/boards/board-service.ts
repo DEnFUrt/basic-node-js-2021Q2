@@ -1,8 +1,6 @@
 import StatusCodes from 'http-status-codes';
 import { IBoardResponse, IBoardBodyParser, ITaskResponse } from '../../common/interfaces';
 import * as boardsRepo from './board-db-repository';
-import * as tasksRepo from '../tasks/task-db-repository';
-import * as logger from '../../logger/logger';
 
 const { OK } = StatusCodes;
 
@@ -28,13 +26,6 @@ const del = async (id: string): Promise<IBoardResponse | ITaskResponse> => {
 
   if (result.statusCode !== OK) {
     return result;
-  }
-
-  const resDelTaskByBoradId = await tasksRepo.delTaskByBoradId(id);
-  const { statusCode, sendMessage } = resDelTaskByBoradId;
-
-  if (statusCode === OK && typeof sendMessage === 'string') {
-    logger.serverInfo(sendMessage);
   }
 
   return boardsRepo.del(id);

@@ -1,7 +1,7 @@
 import { Response, Request, Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import * as taskService from './task-service';
-import { ITaskBodyParser, ITaskResponse, IBoardResponse } from '../../common/interfaces';
+import { ITaskBodyParser, ITaskResponse, IBoardResponse, IUserResponse } from '../../common/interfaces';
 
 const router = Router({ mergeParams: true });
 
@@ -43,7 +43,7 @@ router.route('/').post(
         columnId,
         boardId,
       });
-      const { statusCode, sendMessage }: ITaskResponse | IBoardResponse = result;
+      const { statusCode, sendMessage }: ITaskResponse | IBoardResponse | IUserResponse = result;
 
       res.status(statusCode).json(sendMessage);
     },

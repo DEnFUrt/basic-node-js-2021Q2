@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Board } from './board';
+import { User } from './user';
 
 @Entity()
 export class Task {
@@ -14,12 +16,24 @@ export class Task {
   @Column('varchar', { length: 1000 })
   description = 'Task description';
 
-  @Column('varchar', { length: 50, nullable: true })
+  @ManyToOne(() => User, {
+    cascade: true,
+    onDelete: 'SET NULL'
+  })
+  user!: User;
+
+  @Column('uuid', { nullable: true })
   userId!: string | null;
 
-  @Column('varchar', { length: 50, nullable: true })
+  @ManyToOne(() => Board, {
+    cascade: true,
+    onDelete: 'CASCADE'
+  })
+  board!: Board;
+
+  @Column('uuid', { nullable: true })
   boardId!: string | null;
 
-  @Column('varchar', { length: 50, nullable: true })
+  @Column('uuid', { nullable: true })
   columnId!: string | null;
 }
