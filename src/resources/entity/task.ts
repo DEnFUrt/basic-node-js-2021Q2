@@ -18,7 +18,7 @@ export class Task {
 
   @ManyToOne(() => User, {
     cascade: true,
-    onDelete: 'SET NULL'
+    onDelete: 'SET NULL',
   })
   user!: User;
 
@@ -27,7 +27,7 @@ export class Task {
 
   @ManyToOne(() => Board, {
     cascade: true,
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   board!: Board;
 

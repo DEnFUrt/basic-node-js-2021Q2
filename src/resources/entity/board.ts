@@ -14,9 +14,9 @@ export class Board {
     eager: true,
   })
   columns!: Columns[];
-  
-/*   @OneToMany(() => Task, (tasks) => tasks.board, {
+
+  /*   @OneToMany(() => Task, (tasks) => tasks.board, {
     eager: true,
   })
   tasks!: Task[]; */
-};
+}

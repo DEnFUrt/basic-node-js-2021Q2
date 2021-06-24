@@ -7,13 +7,13 @@ import { IBoardBodyParser, IBoardResponse } from '../../common/interfaces';
 const { NOT_FOUND, OK, CREATED, NO_CONTENT } = StatusCodes;
 
 const getAll = async (): Promise<IBoardResponse> => {
-  const result = await getRepository(Board).find({ relations: ['columns'] });
+  const result = await getRepository(Board).find();
 
   return { statusCode: OK, sendMessage: result };
 };
 
 const get = async (id: string): Promise<IBoardResponse> => {
-  const result = await getRepository(Board).findOne(id, { relations: ['columns'] });
+  const result = await getRepository(Board).findOne(id);
 
   if (result === undefined) {
     return {
