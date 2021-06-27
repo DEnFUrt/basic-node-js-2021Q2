@@ -38,7 +38,7 @@ npm i typeorm
 ```
 Generating migrations
 ```
-npm run migration: generation -n createTable // or any other migration file name
+npm run migration:generation -n createTable // or any other migration file name
 ```
 
 Start of migrations
@@ -67,12 +67,12 @@ docker exec -it container_ID /bin/sh
 
 Generating migrations
 ```
-npm run migration: generation -n createTable // or any other migration file name
+npm run migration:sh:generation -n createTable // or any other migration file name
 ```
 
 Start of migrations
 ```
-npm run migration
+npm run migration:sh
 ```
 
 Running tests
