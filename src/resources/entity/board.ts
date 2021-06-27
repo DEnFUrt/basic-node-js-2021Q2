@@ -11,7 +11,7 @@ export class Board {
   title = 'Title Board';
 
   @OneToMany(() => Columns, (columns) => columns.board, {
-    eager: true,
+    nullable: true, cascade: true
   })
   columns!: Columns[];
 

@@ -1,19 +1,18 @@
 import StatusCodes from 'http-status-codes';
 import { getRepository } from 'typeorm';
 import { Board } from '../entity/board';
-import { Columns } from '../entity/column';
 import { IBoardBodyParser, IBoardResponse } from '../../common/interfaces';
 
 const { NOT_FOUND, OK, CREATED, NO_CONTENT } = StatusCodes;
 
 const getAll = async (): Promise<IBoardResponse> => {
-  const result = await getRepository(Board).find();
+  const result = await getRepository(Board).find({ relations: ['columns'] });
 
   return { statusCode: OK, sendMessage: result };
 };
 
 const get = async (id: string): Promise<IBoardResponse> => {
-  const result = await getRepository(Board).findOne(id);
+  const result = await getRepository(Board).findOne(id, { relations: ['columns'] });
 
   if (result === undefined) {
     return {
@@ -26,10 +25,7 @@ const get = async (id: string): Promise<IBoardResponse> => {
 };
 
 const create = async (props: IBoardBodyParser): Promise<IBoardResponse> => {
-  const columns = getRepository(Columns).create(props.columns);
-  await getRepository(Columns).save(columns);
-
-  const board = getRepository(Board).create({ ...props, columns });
+  const board = getRepository(Board).create(props);
   const savedBoard = await getRepository(Board).save(board);
 
   return { statusCode: CREATED, sendMessage: savedBoard };

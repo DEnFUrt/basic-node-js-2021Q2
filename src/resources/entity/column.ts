@@ -13,7 +13,6 @@ export class Columns {
   order = 0;
 
   @ManyToOne(() => Board, (board) => board.columns, {
-    cascade: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

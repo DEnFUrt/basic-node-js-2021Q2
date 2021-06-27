@@ -21,7 +21,7 @@ export const createAdmin = async (): Promise<void> => {
 
       if (resultMigration.length === 0) {
         throw Error(
-          `No migration file was found, to generate the migration file, run the command: npm run migration:generation -n <nameMigration>`,
+          `No migration file was found, to generate the migration file, run the command: npm run migration:generation -n <nameMigration>, also restart app!`,
         );
       }
 
