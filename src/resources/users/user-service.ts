@@ -1,63 +1,40 @@
 import StatusCodes from 'http-status-codes';
-import { IUserResponse, ITaskResponse } from '../../common/interfaces';
-import * as usersRepo from './user-memory-repository';
-import User from './user-model';
-import * as tasksRepo from '../tasks/task-memory-repository';
+import { IUserResponse, ITaskResponse, IUserBodyParser } from '../../common/interfaces';
+import * as usersRepo from './user-db-repository';
+import * as tasksRepo from '../tasks/task-db-repository';
+import * as logger from '../../logger/logger';
+
+const { OK } = StatusCodes;
 
 const getAll = async (): Promise<IUserResponse> => usersRepo.getAll();
 
 const get = async (id: string): Promise<IUserResponse> => usersRepo.get(id);
 
-const create = async (props: {
-  name: string;
-  login: string;
-  password: string;
-}): Promise<IUserResponse> => {
-  const { name, login, password } = props;
+const create = async (props: IUserBodyParser): Promise<IUserResponse> => usersRepo.create(props);
 
-  const newUser = new User({
-    name,
-    login,
-    password,
-  });
+const put = async (props: IUserBodyParser): Promise<IUserResponse> => {
+  const { id } = props;
+  const searchResultUser = await get(<string>id);
 
-  return usersRepo.create(newUser);
-};
-
-const put = async (props: {
-  id: string;
-  name: string;
-  login: string;
-  password: string;
-}): Promise<IUserResponse> => {
-  const { id, name, login, password } = props;
-  const result = await get(id);
-
-  if (result.statusCode !== StatusCodes.OK) {
-    return result;
+  if (searchResultUser.statusCode !== OK) {
+    return searchResultUser;
   }
 
-  const newUser = new User({
-    id,
-    name,
-    login,
-    password,
-  });
-
-  return usersRepo.update({ id, newUser });
+  return usersRepo.update(props);
 };
 
 const del = async (id: string): Promise<IUserResponse | ITaskResponse> => {
   const result = await get(id);
 
-  if (result.statusCode !== StatusCodes.OK) {
+  if (result.statusCode !== OK) {
     return result;
   }
 
-  const resResetUserId = await tasksRepo.resetUserId(id);
+  const resNullifyUserId = await tasksRepo.nullifyUserId(id);
+  const { statusCode, sendMessage } = resNullifyUserId;
 
-  if (resResetUserId.statusCode !== StatusCodes.NO_CONTENT) {
-    return resResetUserId;
+  if (statusCode === OK && typeof sendMessage === 'string') {
+    logger.serverInfo(sendMessage);
   }
 
   return usersRepo.del(id);

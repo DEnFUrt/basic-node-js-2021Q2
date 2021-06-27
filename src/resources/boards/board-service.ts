@@ -1,56 +1,40 @@
 import StatusCodes from 'http-status-codes';
-import { IColumn, IBoardResponse, ITaskResponse } from '../../common/interfaces';
-import * as boardsRepo from './board-memory-repository';
-import Board from './board-model';
-import * as tasksRepo from '../tasks/task-memory-repository';
+import { IBoardResponse, IBoardBodyParser, ITaskResponse } from '../../common/interfaces';
+import * as boardsRepo from './board-db-repository';
+import * as tasksRepo from '../tasks/task-db-repository';
+import * as logger from '../../logger/logger';
+
+const { OK } = StatusCodes;
 
 const getAll = (): Promise<IBoardResponse> => boardsRepo.getAll();
 
 const get = async (id: string): Promise<IBoardResponse> => boardsRepo.get(id);
 
-const create = (props: { title: string; columns: IColumn[] }): Promise<IBoardResponse> => {
-  const { title, columns } = props;
+const create = (props: IBoardBodyParser): Promise<IBoardResponse> => boardsRepo.create(props);
 
-  const newBoard = new Board({
-    title,
-    columns,
-  });
+const put = async (props: IBoardBodyParser): Promise<IBoardResponse> => {
+  const { id } = props;
+  const searchResultBoard = await get(<string>id);
 
-  return boardsRepo.create(newBoard);
-};
-
-const put = async (props: {
-  id: string;
-  title: string;
-  columns: IColumn[];
-}): Promise<IBoardResponse> => {
-  const { id, title, columns } = props;
-  const result = await get(id);
-
-  if (result.statusCode !== StatusCodes.OK) {
-    return result;
+  if (searchResultBoard.statusCode !== OK) {
+    return searchResultBoard;
   }
 
-  const newBoard = new Board({
-    id,
-    title,
-    columns,
-  });
-
-  return boardsRepo.update({ id, newBoard });
+  return boardsRepo.update(props);
 };
 
 const del = async (id: string): Promise<IBoardResponse | ITaskResponse> => {
   const result = await get(id);
 
-  if (result.statusCode !== StatusCodes.OK) {
+  if (result.statusCode !== OK) {
     return result;
   }
 
-  const resDelByBoradId = await tasksRepo.delByBoradId(id);
+  const resDelTaskByBoradId = await tasksRepo.delTaskByBoradId(id);
+  const { statusCode, sendMessage } = resDelTaskByBoradId;
 
-  if (resDelByBoradId.statusCode !== StatusCodes.NO_CONTENT) {
-    return resDelByBoradId;
+  if (statusCode === OK && typeof sendMessage === 'string') {
+    logger.serverInfo(sendMessage);
   }
 
   return boardsRepo.del(id);

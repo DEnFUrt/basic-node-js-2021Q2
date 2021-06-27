@@ -49,8 +49,8 @@ interface ITask {
   order: number;
   description: string;
   userId: string | null;
-  boardId: string;
-  columnId: string;
+  boardId: string | null;
+  columnId: string | null;
 }
 
 interface ITaskBodyParser {

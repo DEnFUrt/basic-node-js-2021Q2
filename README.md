@@ -11,18 +11,65 @@
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 ```
 
-## Switch to the Task6 branch
+## Switch to the Task7 branch
 
 ```
-git checkout task6
+git checkout task7
 ```
 ## Running multi-container Docker applications:
+The app uses docker copmose
+To start the project, you must perform the following steps
+Open a terminal in the directory where you will clone the repository
 
-1. Install docker compose
-2. Start the application stack with the command
+Execute commands:
+```
+git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
+cd basic-node-js-2021Q2
+git checkout task7
+docker-compose up
+```
+Setting typeorm in the local directory outside the container with the node in order not to enter the terminal inside the container.
+```
+npm i typeorm
+```
+Step can be skipped, because the migration file has already been created. But you can delete it and execute step 6
+```
+npm run migration: generation -n createTable // or any other migration file name
+npm run migration
+npm run test
+```
+If you want to perform the same actions from a container with a node, you must perform the following actions
+Open a terminal in the directory where you will clone the repository
+```
+git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
+cd basic-node-js-2021Q2
+git checkout task7
+```
+Open package.json file
 
+line 19
+
+`"typeorm": "node --require ts-node / register ./node_modules/typeorm/cli.js --config src / common / ormconfig-migration.ts",`
+
+replaced by
+
+`"typeorm": "node --require ts-node / register ./node_modules/typeorm/cli.js --config src / common / ormconfig.ts",`
+
+Returns terminal
 ```
 docker-compose up
+```
+Open another terminal and execute commands in the application directory
+```
+docker ps
+copy the container ID with the node
+docker exec -it container_ID / bin / sh
+```
+Step can be skipped, because the migration file has already been created. But you can delete it and execute step 7
+```
+npm run migration: generation -n createTable // or any other migration file name
+npm run migration
+npm run test
 ```
 
 ## Launching a local application, setting up the environment
