@@ -23,3 +23,9 @@ export const validate = (entity: KeyofSchemas, value: ValueType): void => {
     });
   }
 };
+
+export const idUuidValidate = (arrUuid: string[]): void => {
+  if (arrUuid.length > 0) {
+    arrUuid.map((item) => validate('uuidID', item));
+  }
+};

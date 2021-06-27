@@ -2,8 +2,7 @@ import { Response, Request, Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import * as boardService from './board-service';
 import { IBoardBodyParser, IBoardResponse, ITaskResponse } from '../../common/interfaces';
-import { validate } from '../../utils/entity-validator-handler';
-import { idUuidValidator } from '../../utils/entityID-validater-handler';
+import { validate, idUuidValidate } from '../../utils/entity-validator-handler';
 
 const router = Router();
 
@@ -23,7 +22,7 @@ router.route('/:id').get(
     async (req: Request, res: Response): Promise<void> => {
       const id = req.params['id'] as string;
 
-      idUuidValidator([id]);
+      idUuidValidate([id]);
 
       const result = await boardService.get(id);
       const { statusCode, sendMessage }: IBoardResponse = result;
@@ -54,7 +53,7 @@ router.route('/:id').put(
       const id = req.params['id'] as string;
       const { title, columns } = req.body as IBoardBodyParser;
 
-      idUuidValidator([id]);
+      idUuidValidate([id]);
       validate('board', { title, columns });
 
       const result = await boardService.put({ id, title, columns });
@@ -70,7 +69,7 @@ router.route('/:id').delete(
     async (req: Request, res: Response): Promise<void> => {
       const id = req.params['id'] as string;
 
-      idUuidValidator([id]);
+      idUuidValidate([id]);
 
       const result = await boardService.del(id);
       const { statusCode, sendMessage }: IBoardResponse | ITaskResponse = result;

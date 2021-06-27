@@ -7,8 +7,7 @@ import {
   IBoardResponse,
   IUserResponse,
 } from '../../common/interfaces';
-import { validate } from '../../utils/entity-validator-handler';
-import { idUuidValidator } from '../../utils/entityID-validater-handler';
+import { validate, idUuidValidate } from '../../utils/entity-validator-handler';
 
 const router = Router({ mergeParams: true });
 
@@ -17,7 +16,7 @@ router.route('/').get(
     async (req: Request, res: Response): Promise<void> => {
       const boardId = req.params['boardId'] as string;
 
-      idUuidValidator([boardId]);
+      idUuidValidate([boardId]);
 
       const result = await taskService.getAllByBoardId(boardId);
       const { statusCode, sendMessage }: ITaskResponse = result;
@@ -33,7 +32,7 @@ router.route('/:id').get(
       const boardId = req.params['boardId'] as string;
       const taskId = req.params['id'] as string;
 
-      idUuidValidator([boardId, taskId]);
+      idUuidValidate([boardId, taskId]);
 
       const result = await taskService.getByBoardId({ boardId, taskId });
       const { statusCode, sendMessage }: ITaskResponse = result;
@@ -49,7 +48,7 @@ router.route('/').post(
       const boardId = req.params['boardId'] as string;
       const { title, order, description, userId, columnId } = req.body as ITaskBodyParser;
 
-      idUuidValidator([boardId, userId, columnId]);
+      idUuidValidate([boardId, userId, columnId]);
       validate('task', { title, order, description });
 
       const result = await taskService.create({
@@ -74,7 +73,7 @@ router.route('/:id').put(
       const taskId = req.params['id'] as string;
       const { title, order, description, userId, columnId } = req.body as ITaskBodyParser;
 
-      idUuidValidator([boardId, userId, columnId, taskId]);
+      idUuidValidate([boardId, userId, columnId, taskId]);
       validate('task', { title, order, description });
 
       const result = await taskService.put({
@@ -99,7 +98,7 @@ router.route('/:id').delete(
       const boardId = req.params['boardId'] as string;
       const taskId = req.params['id'] as string;
 
-      idUuidValidator([boardId, taskId]);
+      idUuidValidate([boardId, taskId]);
 
       const result = await taskService.del({ boardId, taskId });
       const { statusCode, sendMessage }: ITaskResponse = result;
