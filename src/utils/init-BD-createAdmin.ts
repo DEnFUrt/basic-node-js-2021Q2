@@ -2,6 +2,7 @@ import { getConnection, QueryRunner } from 'typeorm';
 import StatusCodes from 'http-status-codes';
 import { getUserByLogin, create } from '../resources/users/user-service';
 import { PG_DB, LOGIN_ADMIN, PASSWORD_ADMIN } from '../common/config';
+import logger from '../logger/logger';
 
 const { OK } = StatusCodes;
 const TABLE_NAME = 'user'; // user table name
@@ -23,6 +24,10 @@ export const createAdmin = async (): Promise<void> => {
           `No migration file was found, to generate the migration file, run the command: npm run migration:generation -n <nameMigration>`,
         );
       }
+
+      logger.serverInfo(
+        `Migration was perfomed with yhe following parameters: ${JSON.stringify(resultMigration)}`,
+      );
     }
 
     const user = await getUserByLogin(<string>LOGIN_ADMIN);

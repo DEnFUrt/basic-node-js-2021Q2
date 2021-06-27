@@ -7,12 +7,6 @@ import * as LoginService from './login-service';
 
 const router = Router();
 
-router.route('/').get(
-  asyncHandler(async (_req: Request, res: Response) => {
-    res.json('token');
-  }),
-);
-
 router.route('/').post(
   asyncHandler(async (req: Request, res: Response) => {
     const { login, password } = req.body as ILoginBodyParser;
