@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 import { User } from '../entity/user';
 import { IUser, IUserResponse, IUserToResponse, IUserBodyParser } from '../../common/interfaces';
 
-const { NOT_FOUND, OK, CREATED, NO_CONTENT } = StatusCodes;
+const { NOT_FOUND, OK, CREATED, NO_CONTENT, FORBIDDEN } = StatusCodes;
 
 const toResponse = (user: IUser): IUserToResponse => {
   const { id, name, login } = user;
@@ -30,6 +30,19 @@ const get = async (id: string): Promise<IUserResponse> => {
   const result = toResponse(user);
 
   return { statusCode: OK, sendMessage: result };
+};
+
+const getUser = async (login: string): Promise<IUserResponse> => {
+  const user = await getRepository(User).findOne({login});
+
+  if (user === undefined) {
+    return {
+      statusCode: FORBIDDEN,
+      sendMessage: `User not found: The user with login: ${login} was not found`,
+    };
+  }
+
+  return { statusCode: OK, sendMessage: user };
 };
 
 const create = async (newUser: IUserBodyParser): Promise<IUserResponse> => {
@@ -62,4 +75,4 @@ const del = async (id: string): Promise<IUserResponse> => {
   return { statusCode: NO_CONTENT, sendMessage: 'The user has been deleted' };
 };
 
-export { getAll, get, create, update, del };
+export { getAll, get, getUser, create, update, del };

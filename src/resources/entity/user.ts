@@ -6,7 +6,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column('varchar', { length: 20 })
+  @Column('varchar')
   password = 'P@55w0rd';
 
   @Column('varchar', { length: 50 })

@@ -39,6 +39,7 @@
     "@typescript-eslint/no-unused-vars": "off",
     "no-unused-vars": ["error", { "argsIgnorePattern": "next|cb" }],
     "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
+    "no-void": ["error", { "allowAsStatement": true }],
     "import/no-cycle": "off"
   }
 }
