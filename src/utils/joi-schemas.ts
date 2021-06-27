@@ -8,7 +8,7 @@ export const schemas = {
     .allow(null),
 
   auth: Joi.object()
-  .options({ abortEarly: false, allowUnknown: true })
+    .options({ abortEarly: false, allowUnknown: true })
     .keys({
       password: Joi.string()
         .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_!@#$%^&*])(?=.{8,})'))

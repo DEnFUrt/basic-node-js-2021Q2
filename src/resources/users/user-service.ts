@@ -31,7 +31,8 @@ const put = async (props: IUserBodyParser): Promise<IUserResponse> => {
   const { password } = props;
 
   const hashedPassword = password !== undefined ? await hashByPassword(password) : null;
-  const updateUser = hashedPassword === null ? {... props} : { ...props, password: hashedPassword };
+  const updateUser =
+    hashedPassword === null ? { ...props } : { ...props, password: hashedPassword };
 
   return usersRepo.update(updateUser);
 };

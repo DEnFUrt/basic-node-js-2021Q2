@@ -29,13 +29,23 @@ export const LOG_REWRITE_OVERSIZE = 1048576 as number; // 1Mb = 1048576
 // autorization
 export const AUTH_MODE: boolean = process.env['AUTH_MODE'] === 'true';
 export const { NODE_ENV, JWT_SECRET_KEY } = process.env;
-export const SOLT_ROUNDS: number = !process.env['SOLT_ROUNDS'] ? 10 : parseInt(process.env['SOLT_ROUNDS'] , 10);
+export const SOLT_ROUNDS: number = !process.env['SOLT_ROUNDS']
+  ? 10
+  : parseInt(process.env['SOLT_ROUNDS'], 10);
 export const EXPIRES_IN = process.env['EXPIRES_IN'] || '10m';
 
 // router proxy
-export const  ROUTE_WHITELIST = ['/', '/doc', '/login', '/favicon.ico'];
+export const ROUTE_WHITELIST = ['/', '/doc', '/login', '/favicon.ico'];
 
 // postgresql
-export const { PG_HOST, PG_USER, PG_PASSWORD, PG_DB, PG_PORT, LOGIN_ADMIN, PASSWORD_ADMIN } = process.env;
+export const {
+  PG_HOST,
+  PG_USER,
+  PG_PASSWORD,
+  PG_DB,
+  PG_PORT,
+  LOGIN_ADMIN,
+  PASSWORD_ADMIN,
+} = process.env;
 export const PG_NO_SYNC = true;
 export const PG_NO_LOGS = true;

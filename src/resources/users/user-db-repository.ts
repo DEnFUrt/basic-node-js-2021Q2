@@ -33,7 +33,7 @@ const get = async (id: string): Promise<IUserResponse> => {
 };
 
 const getUser = async (login: string): Promise<IUserResponse> => {
-  const user = await getRepository(User).findOne({login});
+  const user = await getRepository(User).findOne({ login });
 
   if (user === undefined) {
     return {
