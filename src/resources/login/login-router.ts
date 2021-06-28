@@ -1,9 +1,12 @@
 import { Response, Request, Router } from 'express';
+import StatusCodes from 'http-status-codes';
 import asyncHandler from 'express-async-handler';
 import { validate } from '../../utils/entity-validator-handler';
 import { NODE_ENV } from '../../common/config';
 import { ILoginBodyParser } from '../../common/interfaces';
 import * as LoginService from './login-service';
+
+const { ACCEPTED } = StatusCodes;
 
 const router = Router();
 
@@ -15,9 +18,14 @@ router.route('/').post(
       validate('auth', { login, password });
     }
 
-    const token = await LoginService.signToken({ login, password });
+    const result = await LoginService.signToken({ login, password });
+    const { statusCode, sendMessage } = result;
 
-    res.json(token);
+    if (statusCode === ACCEPTED) {
+      res.json({ token: sendMessage });
+    } else {
+      res.status(statusCode).json(sendMessage);
+    }
   }),
 );
 

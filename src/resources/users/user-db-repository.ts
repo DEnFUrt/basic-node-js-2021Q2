@@ -38,7 +38,7 @@ const getUser = async (login: string): Promise<IUserResponse> => {
   if (user === undefined) {
     return {
       statusCode: FORBIDDEN,
-      sendMessage: `User not found: The user with login: ${login} was not found`,
+      sendMessage: `Incorrect login or password`,
     };
   }
 

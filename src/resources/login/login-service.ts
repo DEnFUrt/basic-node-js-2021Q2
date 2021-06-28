@@ -4,16 +4,11 @@ import { getUserByLogin } from '../users/user-service';
 import { createToken } from '../../utils-crypto/token-helper';
 import { chechkPassword } from '../../utils-crypto/hash-helper';
 
-const { OK, FORBIDDEN } = StatusCodes;
+const { OK, FORBIDDEN, ACCEPTED } = StatusCodes;
 
 export const signToken = async (
   props: ILoginBodyParser,
-): Promise<
-  | IUserResponse
-  | {
-      token: string;
-    }
-> => {
+): Promise<IUserResponse> => {
   const { login: reqLogin, password: reqPassword } = props;
 
   const result = await getUserByLogin(reqLogin);
@@ -30,13 +25,14 @@ export const signToken = async (
   if (resultReconciling !== true) {
     return {
       statusCode: FORBIDDEN,
-      sendMessage: `User not found: The user with login: ${reqLogin} was not found`,
+      sendMessage: `Incorrect login or password`,
     };
   }
 
   const token = (await createToken({ id, login })) as string;
 
-  return { token };
+  return { 
+    statusCode: ACCEPTED,
+    sendMessage: token 
+  };
 };
-
-// export { signToken };
