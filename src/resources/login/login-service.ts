@@ -6,9 +6,7 @@ import { chechkPassword } from '../../utils-crypto/hash-helper';
 
 const { OK, FORBIDDEN, ACCEPTED } = StatusCodes;
 
-export const signToken = async (
-  props: ILoginBodyParser,
-): Promise<IUserResponse> => {
+export const signToken = async (props: ILoginBodyParser): Promise<IUserResponse> => {
   const { login: reqLogin, password: reqPassword } = props;
 
   const result = await getUserByLogin(reqLogin);
@@ -31,8 +29,8 @@ export const signToken = async (
 
   const token = (await createToken({ id, login })) as string;
 
-  return { 
+  return {
     statusCode: ACCEPTED,
-    sendMessage: token 
+    sendMessage: token,
   };
 };
