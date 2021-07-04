@@ -32,9 +32,9 @@ At startup, the application checks whether the database and the table structure 
 The corresponding messages are displayed in the log.
 If you want to create migrations yourself, follow these steps
 
-Setting typeorm in the local directory outside the container with the node in order not to enter the terminal inside the container.
+Setting dependencies in the local directory outside the container with the node in order not to enter the terminal inside the container.
 ```
-npm i typeorm
+npm i 
 ```
 Generating migrations
 ```
