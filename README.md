@@ -11,10 +11,10 @@
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 ```
 
-## Switch to the Task7 branch
+## Switch to the Task8 branch
 
 ```
-git checkout task7
+git checkout task8
 ```
 ## Running multi-container Docker applications:
 The app uses docker copmose
@@ -25,51 +25,59 @@ Execute commands:
 ```
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 cd basic-node-js-2021Q2
-git checkout task7
+git checkout task8
 docker-compose up
 ```
-Setting typeorm in the local directory outside the container with the node in order not to enter the terminal inside the container.
+At startup, the application checks whether the database and the table structure exist, if not, then the initial migration starts automatically, after which the admin user is created.
+The corresponding messages are displayed in the log.
+If you want to create migrations yourself, follow these steps
+
+Setting dependencies in the local directory outside the container with the node in order not to enter the terminal inside the container.
 ```
-npm i typeorm
+npm i 
 ```
-Step can be skipped, because the migration file has already been created. But you can delete it and execute step 6
+Generating migrations
 ```
-npm run migration: generation -n createTable // or any other migration file name
+npm run migration:generation -n createTable // or any other migration file name
+```
+
+Start of migrations
+```
 npm run migration
-npm run test
+```
+
+Running tests
+```
+npm run test:auth
 ```
 If you want to perform the same actions from a container with a node, you must perform the following actions
 Open a terminal in the directory where you will clone the repository
 ```
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 cd basic-node-js-2021Q2
-git checkout task7
-```
-Open package.json file
-
-line 19
-
-`"typeorm": "node --require ts-node / register ./node_modules/typeorm/cli.js --config src / common / ormconfig-migration.ts",`
-
-replaced by
-
-`"typeorm": "node --require ts-node / register ./node_modules/typeorm/cli.js --config src / common / ormconfig.ts",`
-
-Returns terminal
-```
+git checkout task8
 docker-compose up
 ```
 Open another terminal and execute commands in the application directory
 ```
 docker ps
 copy the container ID with the node
-docker exec -it container_ID / bin / sh
+docker exec -it container_ID /bin/sh
 ```
-Step can be skipped, because the migration file has already been created. But you can delete it and execute step 7
+
+Generating migrations
 ```
-npm run migration: generation -n createTable // or any other migration file name
-npm run migration
-npm run test
+npm run migration:sh:generation -n createTable // or any other migration file name
+```
+
+Start of migrations
+```
+npm run migration:sh
+```
+
+Running tests
+```
+npm run test:auth
 ```
 
 ## Launching a local application, setting up the environment

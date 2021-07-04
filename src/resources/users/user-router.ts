@@ -2,6 +2,7 @@ import { Response, Request, Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import * as usersService from './user-service';
 import { IUserBodyParser, IUserResponse, ITaskResponse } from '../../common/interfaces';
+import { validate, idUuidValidate } from '../../utils/entity-validator-handler';
 
 const router = Router();
 
@@ -20,6 +21,9 @@ router.route('/:id').get(
   asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const id = req.params['id'] as string;
+
+      idUuidValidate([id]);
+
       const result = await usersService.get(id);
       const { statusCode, sendMessage }: IUserResponse = result;
 
@@ -32,6 +36,9 @@ router.route('/').post(
   asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const { name, login, password } = req.body as IUserBodyParser;
+
+      validate('user', { name, login, password });
+
       const result = await usersService.create({ name, login, password });
       const { statusCode, sendMessage }: IUserResponse = result;
 
@@ -45,6 +52,10 @@ router.route('/:id').put(
     async (req: Request, res: Response): Promise<void> => {
       const id = req.params['id'] as string;
       const { name, login, password } = req.body as IUserBodyParser;
+
+      idUuidValidate([id]);
+      validate('user', { name, login, password });
+
       const result = await usersService.put({ id, name, login, password });
       const { statusCode, sendMessage }: IUserResponse = result;
 
@@ -57,6 +68,9 @@ router.route('/:id').delete(
   asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const id = req.params['id'] as string;
+
+      idUuidValidate([id]);
+
       const result = await usersService.del(id);
       const { statusCode, sendMessage }: IUserResponse | ITaskResponse = result;
 

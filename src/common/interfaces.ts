@@ -15,9 +15,14 @@ interface IUserBodyParser {
   login: string;
 }
 
+interface ILoginBodyParser {
+  password: string;
+  login: string;
+}
+
 interface IUserResponse {
   statusCode: number;
-  sendMessage: IUserToResponse | IUserToResponse[] | string;
+  sendMessage: IUser | IUserToResponse | IUserToResponse[] | string;
 }
 
 interface IBoard {
@@ -93,4 +98,5 @@ export {
   ITaskBodyParser,
   ITaskResponse,
   IJsonMessage,
+  ILoginBodyParser,
 };

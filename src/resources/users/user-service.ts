@@ -1,8 +1,7 @@
 import StatusCodes from 'http-status-codes';
+import { hashByPassword } from '../../utils-crypto/hash-helper';
 import { IUserResponse, ITaskResponse, IUserBodyParser } from '../../common/interfaces';
 import * as usersRepo from './user-db-repository';
-import * as tasksRepo from '../tasks/task-db-repository';
-import * as logger from '../../logger/logger';
 
 const { OK } = StatusCodes;
 
@@ -10,7 +9,16 @@ const getAll = async (): Promise<IUserResponse> => usersRepo.getAll();
 
 const get = async (id: string): Promise<IUserResponse> => usersRepo.get(id);
 
-const create = async (props: IUserBodyParser): Promise<IUserResponse> => usersRepo.create(props);
+const getUserByLogin = async (login: string): Promise<IUserResponse> => usersRepo.getUser(login);
+
+const create = async (props: IUserBodyParser): Promise<IUserResponse> => {
+  const { password } = props;
+
+  const hashedPassword = await hashByPassword(password);
+  const newUser = { ...props, password: hashedPassword };
+
+  return usersRepo.create(newUser);
+};
 
 const put = async (props: IUserBodyParser): Promise<IUserResponse> => {
   const { id } = props;
@@ -20,7 +28,13 @@ const put = async (props: IUserBodyParser): Promise<IUserResponse> => {
     return searchResultUser;
   }
 
-  return usersRepo.update(props);
+  const { password } = props;
+
+  const hashedPassword = password !== undefined ? await hashByPassword(password) : null;
+  const updateUser =
+    hashedPassword === null ? { ...props } : { ...props, password: hashedPassword };
+
+  return usersRepo.update(updateUser);
 };
 
 const del = async (id: string): Promise<IUserResponse | ITaskResponse> => {
@@ -30,14 +44,7 @@ const del = async (id: string): Promise<IUserResponse | ITaskResponse> => {
     return result;
   }
 
-  const resNullifyUserId = await tasksRepo.nullifyUserId(id);
-  const { statusCode, sendMessage } = resNullifyUserId;
-
-  if (statusCode === OK && typeof sendMessage === 'string') {
-    logger.serverInfo(sendMessage);
-  }
-
   return usersRepo.del(id);
 };
 
-export { getAll, get, create, put, del };
+export { getAll, get, create, put, del, getUserByLogin };

@@ -13,10 +13,10 @@ const getByBoardId = (props: { boardId: string; taskId: string }): Promise<ITask
 
 const create = async (props: ITaskBodyParser): Promise<ITaskResponse | IBoardResponse> => {
   const { boardId } = props;
-  const result = await boardsRepo.get(boardId);
+  const resultGetBoard = await boardsRepo.get(boardId);
 
-  if (result.statusCode !== OK) {
-    return result;
+  if (resultGetBoard.statusCode !== OK) {
+    return resultGetBoard;
   }
 
   return tasksRepo.create(props);
