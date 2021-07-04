@@ -1,5 +1,7 @@
 import Joi from 'joi';
 
+const rgxPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_!@#$%^&*])(?=.{8,})');
+
 export const schemas = {
   uuidID: Joi.string()
     .guid({
@@ -11,7 +13,7 @@ export const schemas = {
     .options({ abortEarly: false, allowUnknown: true })
     .keys({
       password: Joi.string()
-        .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_!@#$%^&*])(?=.{8,})'))
+        .pattern(rgxPassword)
         .required(),
 
       login: Joi.string().min(3).max(50).required(),
@@ -23,7 +25,7 @@ export const schemas = {
       name: Joi.string().min(3).max(50).required(),
 
       password: Joi.string()
-        .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_!@#$%^&*])(?=.{8,})'))
+        .pattern(rgxPassword)
         .required(),
 
       login: Joi.string().min(3).max(50).required(),
