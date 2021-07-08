@@ -12,11 +12,15 @@ export const createAdmin = async (): Promise<void> => {
     const connection = getConnection();
     const queryRunner: QueryRunner = connection.createQueryRunner();
 
-    if (!(await queryRunner.hasDatabase(<string>PG_DB))) {
+    const isHasDB = await queryRunner.hasDatabase(<string>PG_DB);
+
+    if (!isHasDB) {
       throw Error(`${<string>PG_DB} database does not exist, check config file`);
     }
 
-    if (!(await queryRunner.hasTable(TABLE_NAME))) {
+    const isHasTable = await queryRunner.hasTable(TABLE_NAME);
+
+    if (!isHasTable) {
       const resultMigration = await connection.runMigrations();
 
       if (resultMigration.length === 0) {
