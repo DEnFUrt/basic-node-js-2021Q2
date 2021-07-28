@@ -11,11 +11,6 @@
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 ```
 
-## Switch to the Task8 branch
-
-```
-git checkout task8
-```
 ## Running multi-container Docker applications:
 The app uses docker copmose
 To start the project, you must perform the following steps
@@ -25,7 +20,6 @@ Execute commands:
 ```
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 cd basic-node-js-2021Q2
-git checkout task8
 docker-compose up
 ```
 At startup, the application checks whether the database and the table structure exist, if not, then the initial migration starts automatically, after which the admin user is created.
@@ -55,7 +49,6 @@ Open a terminal in the directory where you will clone the repository
 ```
 git clone https://github.com/DEnFUrt/basic-node-js-2021Q2.git
 cd basic-node-js-2021Q2
-git checkout task8
 docker-compose up
 ```
 Open another terminal and execute commands in the application directory
